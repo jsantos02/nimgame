@@ -34,3 +34,10 @@ function closeModal(modal) {
   modal.classList.remove('active')
   overlay.classList.remove('active')
 }
+
+document.getElementById("submit").onclick = function tamanho_tabuleiro() {
+    var tabuleiro = document.getElementById("tabuleiro").value;
+    //if (tabuleiro == 1 )console.log("É IGUAL");
+    //else console.log("É DIFERENTE");
+    return tabuleiro;
+}

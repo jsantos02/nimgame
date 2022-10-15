@@ -30,6 +30,29 @@
     </div>
   </div>
   <div id="overlay"></div>
+  <form>
+    <div>
+      <label for="tabuleiro">Tamanho do tabuleiro</label>
+      <input type="number" name= "tabuleiro" id="tabuleiro" min="0" max="15"><br>
+    </div>
+    <div>
+      <label for="starter">Quem começa a jogar</label>
+      <select id="starter" name="starter">
+        <option value="jogador1">Jogador 1</option>
+        <option value="computador">Computador</option>
+      </select>
+    </div>
+    <div>
+      <label for="dificulty">Dificuldade da IA</label>
+      <select id="dificulty" name="dificulty">
+        <option value="facil">Fácil</option>
+        <option value="medio">Normal</option>
+        <option value="dificil">Difícil</option>
+      </select>
+    </div>
+    </div>
+    <button type="submit" id="submit">Confirmar</button>
+  </form>
 </body>
 </html>
 </html>
