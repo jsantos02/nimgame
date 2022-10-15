@@ -2,9 +2,10 @@
 <!-- A declaração DOCTYPE declara a versão do HTML usado no documento -->
 <html lang="pt">
 <link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
 <body>
     
-<div class="container">
+<div class="container" align="right">
     <label for="uname"><b>Username</b></label>
     <input type="text" placeholder="Enter Username" name="uname" required>
 
@@ -17,6 +18,18 @@
       <input type="checkbox" checked="checked" name="remember"> Remember me
     </label>
   </div>
+  <center> <img src="nim.png"> </center>
+  <button data-modal-target="#modal">Abrir Regras</button>
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="title">Regras do Jogo</div>
+      <button data-close-button class="close-button">&times;</button>
+    </div>
+    <div class="modal-body">
+      O Nim é um jogo matemático de estratégia em que dois jogadores alternadamente removem objetos (contas, grãos, fosforos) de diferentes pilhas. A cada jogada, o jogador deve remover pelo menos um objeto de um pilha e todos os objetos removidos devem pertencer à mesma pilha. O objetivo do jogo é remover o último objeto. (Alternativamente, o objetivo pode ser evitar tirar o último objeto - "à lá misére").
+    </div>
+  </div>
+  <div id="overlay"></div>
 </body>
 </html>
 </html>
