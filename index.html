@@ -4,8 +4,8 @@
 <link rel="stylesheet" href="style.css">
 <script defer src="script.js"></script>
 <body>
-    
-<div class="container" align="right">
+
+  <div class="container" align="right">
     <label for="uname"><b>Username</b></label>
     <input type="text" placeholder="Enter Username" name="uname" required>
 
@@ -31,18 +31,18 @@
   </div>
   <div id="overlay"></div>
   <form>
-    <div>
+    <div id="seguido">
       <label for="tabuleiro">Tamanho do tabuleiro</label>
-      <input type="number" name= "tabuleiro" id="tabuleiro" min="0" max="15"><br>
+      <input type="number" name= "tabuleiro" id="tabuleiro" min="4" max="9">
     </div>
-    <div>
+    <div id="seguido">
       <label for="starter">Quem começa a jogar</label>
       <select id="starter" name="starter">
         <option value="jogador1">Jogador 1</option>
         <option value="computador">Computador</option>
       </select>
     </div>
-    <div>
+    <div id="seguido">
       <label for="dificulty">Dificuldade da IA</label>
       <select id="dificulty" name="dificulty">
         <option value="facil">Fácil</option>
@@ -54,5 +54,4 @@
     <button type="submit" id="submit">Confirmar</button>
   </form>
 </body>
-</html>
 </html>

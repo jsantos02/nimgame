@@ -3,6 +3,11 @@ body {
     background-color: whitesmoke;
 }
 
+#seguido {
+  float: left;
+  padding: 5px;
+}
+
 .modal {
   position: fixed;
   top: 50%;

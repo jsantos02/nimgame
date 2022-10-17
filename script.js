@@ -41,3 +41,5 @@ document.getElementById("submit").onclick = function tamanho_tabuleiro() {
     //else console.log("É DIFERENTE");
     return tabuleiro;
 }
+
+
