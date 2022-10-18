@@ -55,6 +55,6 @@ window.onload = function tamanho_tabuleiro() {
 
 function startGame() {
   var test = document.getElementById("changednumber");
-  test.innerHTML = 4;
+  test.innerHTML = tabuleiro;
   alert("Boas");
 }
