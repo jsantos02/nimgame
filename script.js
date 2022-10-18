@@ -1,6 +1,9 @@
 const openModalButtons = document.querySelectorAll('[data-modal-target]')
 const closeModalButtons = document.querySelectorAll('[data-close-button]')
 const overlay = document.getElementById('overlay')
+var tabuleiro;
+var starter;
+var dificulty;
 
 openModalButtons.forEach(button => {
   button.addEventListener('click', () => {
@@ -35,11 +38,21 @@ function closeModal(modal) {
   overlay.classList.remove('active')
 }
 
-document.getElementById("submit").onclick = function tamanho_tabuleiro() {
-    var tabuleiro = document.getElementById("tabuleiro").value;
-    //if (tabuleiro == 1 )console.log("É IGUAL");
-    //else console.log("É DIFERENTE");
-    return tabuleiro;
+function gerCol(n) {
+  for(let i = 0; i < n; i++) {
+    array[i].append('');
+  }
+}
+window.onload = function tamanho_tabuleiro() {
+    let btn = document.getElementById("submit");
+    btn.onclick = function(){
+      tabuleiro = document.getElementById("tabuleiro").value;
+      starter = document.getElementById("starter").value;
+      dificulty = document.getElementById("dificulty").value;
+      startGame();
+    }
 }
 
-
+function startGame() {
+  alert("Boas");
+}

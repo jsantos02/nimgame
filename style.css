@@ -26,7 +26,6 @@ img[alt="logo"] {
   width:20%;
   height: 20%;
 }
-
 .modal.active {
   transform: translate(-50%, -50%) scale(1);
 }

@@ -29,11 +29,21 @@
       O Nim é um jogo matemático de estratégia em que dois jogadores alternadamente removem objetos (contas, grãos, fosforos) de diferentes pilhas. A cada jogada, o jogador deve remover pelo menos um objeto de um pilha e todos os objetos removidos devem pertencer à mesma pilha. O objetivo do jogo é remover o último objeto. (Alternativamente, o objetivo pode ser evitar tirar o último objeto - "à lá misére").
     </div>
   </div>
+  <button data-modal-target="#modal2">Classificações</button>
+  <div class="modal" id="modal2">
+    <div class="modal-header">
+      <div class="title">Classificações</div>
+      <button data-close-button class="close-button">&times;</button>
+    </div>
+    <div class="modal-body">
+      alguma coisa ficará aqui escrita
+    </div>
+  </div>
   <div id="overlay"></div>
-  <form>
+  <form id="board">
     <div id="seguido">
       <label for="tabuleiro">Tamanho do tabuleiro</label>
-      <input type="number" name= "tabuleiro" id="tabuleiro" min="4" max="9">
+      <input type="number" name= "tabuleiro" id="tabuleiro" value="4" min="4" max="9">
     </div>
     <div id="seguido">
       <label for="starter">Quem começa a jogar</label>
@@ -53,5 +63,6 @@
     </div>
     <button type="submit" id="submit">Confirmar</button>
   </form>
+  <br>
 </body>
 </html>
