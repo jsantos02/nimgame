@@ -107,6 +107,11 @@ body {
 }
 
 img[alt="logo"] {
+  width:5%;
+  height: 5%;
+}
+
+img[alt="logogrande"] {
   width:20%;
   height: 20%;
 }
@@ -159,6 +164,7 @@ img[alt="logo"] {
 
 .navbar {
   height: 80px;
+  float:right;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -170,7 +176,7 @@ img[alt="logo"] {
 }
 
 .navbar__item button {
-  float: center;
+  
   text-align: center;
   padding: 12px 14px;
   text-decoration: none;
@@ -202,6 +208,7 @@ img[alt="logo"] {
   align-items: center;
   list-style: none;
   text-align: center;
+  
 }
 .navbar__item {
   height: 80px;
@@ -210,6 +217,7 @@ img[alt="logo"] {
   margin-right: 0.5rem;
 }
 #navbar__logo {
+  float:left;
   background-color: #151B8D;
   background-image: linear-gradient(to top, #151B8D 0%, #151B8D 100%);
   background-size: 100%;
