@@ -1,4 +1,7 @@
 ->	Página + Interativa (aquela cena de ter um logo grande e dps passar para logo pequeno)
 -> 	Tabuleiro
+    -> Funcao Gerar Tabuleiro a partir do input do forms
+    -> Funcao iniciar jogo (ter cuidado com os turnos)
+    -> Funcao que devolve coluna onde joga o AI e quantas fichas tira
 -> 	Classificações
 -> 	Centrar o logo
