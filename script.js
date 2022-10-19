@@ -38,6 +38,8 @@ function closeModal(modal) {
   overlay.classList.remove('active')
 }
 
+//coisas do tabuleiro a partir daqui
+
 function gerCol(n) {
   for(let i = 0; i < n; i++) {
     array[i].append('');
@@ -54,7 +56,11 @@ window.onload = function tamanho_tabuleiro() {
 }
 
 function startGame() {
-  var test = document.getElementById("changednumber");
-  test.innerHTML = tabuleiro;
-  alert("Boas");
+  var tamanho = document.getElementById("changednumber");
+  tamanho.innerHTML = tabuleiro;
+  var comeca = document.getElementById("starter11");
+  comeca.innerHTML = starter;
+  var dificuldade = document.getElementById("dificulty11"); //printar no html o input do forms
+  dificuldade.innerHTML = dificulty;
+  //alert("Boas");
 }

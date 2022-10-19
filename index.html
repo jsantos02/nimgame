@@ -11,7 +11,7 @@
     <div class="navbar__container">
       <ul class="navbar__menu">
         <li class="navbar__item">
-          <button data-modal-target="#modal3">Login</button>
+          <button data-modal-target="#modal3" id="menuopen">Login</button>
           <div class="modal" id="modal3">
             <div class="modal-header">
               <div class="title">Entra ou Regista-te</div>
@@ -35,7 +35,7 @@
           </div>
         </li>
         <li class="navbar__item">
-          <button data-modal-target="#modal">Abrir Regras</button>
+          <button data-modal-target="#modal" id="menuopen">Abrir Regras</button>
         <div class="modal" id="modal">
           <div class="modal-header">
             <div class="title">Regras do Jogo</div>
@@ -50,7 +50,7 @@
         </div>
       </li>
       <li class="navbar__item">
-        <button data-modal-target="#modal2">Classificações</button>
+        <button data-modal-target="#modal2" id="menuopen">Classificações</button>
         <div class="modal" id="modal2">
           <div class="modal-header">
             <div class="title">Classificações</div>
@@ -93,8 +93,9 @@
   </form>
   <br>
   <div id="boardgame">
-    <h1>isto é onde o jogo deve estar.</h1>
-    <p id="changednumber">2</p>
+    <p id="changednumber"></p>
+    <p id="starter11"></p>
+    <p id="dificulty11"></p>
   </div>
 </body>
 
