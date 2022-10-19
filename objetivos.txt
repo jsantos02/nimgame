@@ -1,0 +1,4 @@
+->	Página + Interativa (aquela cena de ter um logo grande e dps passar para logo pequeno)
+-> 	Tabuleiro
+-> 	Classificações
+-> 	Centrar o logo
