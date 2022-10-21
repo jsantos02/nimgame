@@ -68,35 +68,36 @@
   </nav>
   <center> <img src="Binary_tree_v2.png" alt="logogrande"></center>
   <div id="overlay"></div>
-  <form id="board">
-    <div id="seguido">
-      <label for="tabuleiro">Tamanho do tabuleiro</label>
-      <input type="number" name="tabuleiro" id="tabuleiro" value="4" min="4" max="9">
+  <div id="interacao">
+    <form id="board">
+        <div id="seguido">
+          <label for="tabuleiro">Tabuleiro</label>
+        <input type="number" name="tabuleiro" id="tabuleiro" value="4" min="4" max="9">
+      </div>
+      <div id="seguido">
+        <label for="starter">Quem começa</label>
+        <select id="starter" name="starter">
+          <option value="jogador1">Jogador 1</option>
+          <option value="computador">Computador</option>
+        </select>
+      </div>
+      <div id="seguido">
+        <label for="dificulty">Dificuldade da IA</label>
+        <select id="dificulty" name="dificulty">
+          <option value="facil">Fácil</option>
+          <option value="medio">Normal</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </div>
+      <button type="button" class="submit" id="submit">Confirmar</button>
+    </form>
+    <br>
+    <div class="boardgame" id="boardgame">
+      <!--<p id="changednumber"></p>
+        <p id="starter11"></p>
+        <p id="dificulty11"></p>-->
     </div>
-    <div id="seguido">
-      <label for="starter">Quem começa a jogar</label>
-      <select id="starter" name="starter">
-        <option value="jogador1">Jogador 1</option>
-        <option value="computador">Computador</option>
-      </select>
-    </div>
-    <div id="seguido">
-      <label for="dificulty">Dificuldade da IA</label>
-      <select id="dificulty" name="dificulty">
-        <option value="facil">Fácil</option>
-        <option value="medio">Normal</option>
-        <option value="dificil">Difícil</option>
-      </select>
-    </div>
-    </div>
-    <button type="button" id="submit">Confirmar</button>
-  </form>
-  <br>
-  <div id="boardgame">
-    <p id="changednumber"></p>
-    <p id="starter11"></p>
-    <p id="dificulty11"></p>
   </div>
-</body>
+  </body>
 
 </html>
