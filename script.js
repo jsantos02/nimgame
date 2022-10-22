@@ -62,8 +62,10 @@ function AddNew() {
       newDiv.append(ficha);
     }
     DivContainer.appendChild(newDiv);
+    
   }
   remove_Child();
+
 }
 
 function remove_Child() {
@@ -76,6 +78,21 @@ function remove_Child() {
       //row.removeChild("f1");
     }
   }
+}
+
+function loseGame() {
+  const gamelost = document.getElementById("gamestatus");
+  gamelost.innerHTML = "You Lost!";
+}
+
+function winGame() {
+  const gamewon = document.getElementById("gamestatus");
+  gamewon.innerHTML = "You Won!"
+}
+
+function drawGame() {
+  const gamedraw = document.getElementById("gamestatus");
+  gamedraw.innerHTML = "Draw!"
 }
 
 
