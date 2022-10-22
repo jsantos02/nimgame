@@ -62,20 +62,19 @@ function AddNew() {
       newDiv.append(ficha);
     }
     DivContainer.appendChild(newDiv);
-    
   }
-  remove_Child();
-
+  remove_Child(1,2);
 }
 
 function remove_Child() {
   var div = DivContainer.getElementsByTagName("div")
   for (let i =0;i <div.length;i++) {
-    //console.log("i = ",div[i]);
+    console.log("i = ",div[i]);
+    //if (i==2) DivContainer.removeChild(div[i]);
     if (i==2) {
-      var row = div.getElementById("r"+2);
-      console.log("ficha = ",row[i])
-      //row.removeChild("f1");
+      const row = document.getElementById("r"+arguments[0]);
+      var ficha = row.getElementsByTagName("img");
+      row.removeChild(ficha[arguments[1]]);
     }
   }
 }
