@@ -47,28 +47,7 @@ body {
 
 
 
-#menuopen {
-  margin: 4px;
-  background: #151B8D;
-  border-radius: 999px;
-  box-sizing: border-box;
-  color: #5CB3FF;
-  cursor: pointer;
-  font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
-  opacity: 1;
-  outline: 0 solid transparent;
-  padding: 8px 18px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: fit-content;
-  word-break: break-word;
-  border: 0;
-}
-#submit {
+#menuopen,#submit, #loginreg, button[id="singleplayerRanking"], button[id="multiplayerRanking"] {
   margin: 4px;
   background: #151B8D;
   border-radius: 999px;
@@ -90,26 +69,13 @@ body {
   border: 0;
 }
 
-#loginreg {
-  margin: 4px;
-  background:#151B8D;
-  border-radius: 999px;
-  box-sizing: border-box;
-  color: black;
-  cursor: pointer;
+#gamestatus {
+  color:#5CB3FF;
   font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
-  font-size: 16px;
+  font-size: 25px;
   font-weight: 700;
   line-height: 24px;
-  opacity: 1;
-  outline: 0 solid transparent;
-  padding: 8px 18px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: fit-content;
-  word-break: break-word;
-  border: 0;
+  margin:10px;
 }
 .modal {
   position: fixed;
@@ -143,12 +109,14 @@ img[alt="logogrande"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color:#5CB3FF;
   border-bottom: 1px solid black;
 }
 
 .modal-header .title {
   font-size: 1.25rem;
   font-weight: bold;
+  background-color:#5CB3FF;
 }
 
 .modal-header .close-button {
@@ -156,11 +124,13 @@ img[alt="logogrande"] {
   border: none;
   outline: none;
   background: none;
+  background-color:#5CB3FF;
   font-size: 1.25rem;
   font-weight: bold;
 }
 
 .modal-body {
+  background-color:#5CB3FF;
   padding: 10px 15px;
 }
 
@@ -283,7 +253,6 @@ img[alt="logogrande"] {
 #interacao {
   display:flex;
 }
-
 
 .divrow {
   width: auto;
