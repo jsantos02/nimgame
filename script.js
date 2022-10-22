@@ -41,6 +41,8 @@ function closeModal(modal) {
 //coisas do tabuleiro a partir daqui
 const BtnAdd = document.querySelector(".submit");
 const DivContainer = document.getElementById("boardgame");
+var turn = document.getElementById("playerTurn");
+turn.style.display = "none";
 
 
 BtnAdd.addEventListener("click", AddNew);
@@ -63,21 +65,48 @@ function AddNew() {
     }
     DivContainer.appendChild(newDiv);
   }
-  remove_Child("r3",0);
+  var starter= document.getElementById("starter").value;
+  var turnPlayer1 = (starter == "jogador1");
+  var turnAI = (starter !== "jogador1");
+  var aux = false;
+  while(!emptyGame(aux)){
+    if(turnPlayer1){ 
+      turn.style.display = "block";
+      const BtnPlayer = document.querySelector(".turnPlayer");
+      BtnPlayer.addEventListener("click", turnPlayer);
+    }
+    else{
+      turn.style.display = "none";
+    }
+    invertTurn(turnPlayer1,turnAI);
+    aux=true;
+  }
+}
+
+function turnPlayer(){
+  var tirarLinha = document.getElementById("tirarLinha").value;
+  var tirarFicha = document.getElementById("tirarFichas").value;
+  console.log("linha ",tirarLinha," ficha = ",tirarFicha);
+  remove_Child("r"+tirarLinha,tirarFicha);
+}
+
+function emptyGame(r){
+  return r;
+}
+
+function invertTurn(jogador1,jogador2){
+  jogador1= !jogador1;
+  jogador2= !jogador2;
 }
 
 function remove_Child(ro,fic) {
   var div = DivContainer.getElementsByTagName("div")
   for (let i =0;i <div.length;i++) {
-    console.log("i = ",div[i]);
-    //if (i==2) DivContainer.removeChild(div[i]);
     const row = document.getElementById(ro);
     var ficha = row.getElementsByTagName("img");
+    //if (fic>ficha.length) errorMsg("Jogada inválida"); FALTA AREA PARA DIZER  DE QUEM É A JOGAR E AS JOGADAS INVALIDAS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     for(let k=fic ; k < (ficha.length) ; k++){
-      console.log(k<ficha.length);
-      console.log("k = ",k,"ficha = ",ficha.length);
       row.removeChild(ficha[k]);
-      console.log(k++<ficha.length);
     }
   }
 }

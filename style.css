@@ -47,7 +47,7 @@ body {
 
 
 
-#menuopen,#submit, #loginreg, button[id="singleplayerRanking"], button[id="multiplayerRanking"] {
+#menuopen,#submit,#turnPlayer, #loginreg, button[id="singleplayerRanking"], button[id="multiplayerRanking"] {
   margin: 4px;
   background: #151B8D;
   border-radius: 999px;
