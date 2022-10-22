@@ -58,7 +58,8 @@
             <button data-close-button class="close-button">&times;</button>
           </div>
           <div class="modal-body">
-            alguma coisa ficará aqui escrita
+            <button type="button" id="singleplayerRanking" onclick="singleplayerRanks()">Contra o Computador</button>
+            <button type="button" id="multiplayerRanking" onclick="multiplayerRanks()">Contra outro jogador</button>
           </div>
         </div>
       </li>
@@ -90,6 +91,7 @@
         </select>
       </div>
       <button type="button" class="submit" id="submit">Confirmar</button>
+      <button onclick="location.href=''"type="button" class="submit" id="submit">Reset</button>
     </form>
     <br>
     <div class="boardgame" id="boardgame">
