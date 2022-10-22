@@ -126,6 +126,18 @@ function drawGame() {
   gamedraw.innerHTML = "Draw!"
 }
 
+function aiPCmove() {
+  const dif = document.getElementById("dificulty").value;
+  const sizeB = document.getElementById("tabuleiro").value;
+  switch(dif) {
+    case 'facil':
+      var div = DivContainer.getElementsByTagName("div")
+      var x = Math.floor(Math.random() * sizeB);
+      var y = Math.floor(Math.random() * div.length);
+      remove_Child(x,y);
+  }
+ 
+}
 
 /*const main = document.querySelector('.boardgame')
 
