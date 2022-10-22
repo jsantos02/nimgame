@@ -42,14 +42,42 @@ function closeModal(modal) {
 const BtnAdd = document.querySelector(".submit");
 const DivContainer = document.getElementById("boardgame");
 
+
 BtnAdd.addEventListener("click", AddNew);
 
 function AddNew() {
-    const newDiv = document.createElement("div");
-    console.log("Adicionado");
-    newDiv.classList.add('divrow');
+  var tabuleiro = document.getElementById("tabuleiro").value;
+  //newDiv.classList.add('divrow');
+  for (let i =0; i< tabuleiro; i++) {
+    var newDiv = document.createElement("div");
+    newDiv.id = 'r'+i;
+    newDiv.className = 'row';
+    for(let j=0;j<=i;j++) {
+      var ficha = document.createElement("img");
+      ficha.id = 'f'+j;
+      ficha.className = 'ficha';
+      ficha.src= "piece.png"
+      ficha.setAttribute("height", "70");
+      ficha.setAttribute("width", "70");
+      newDiv.append(ficha);
+    }
     DivContainer.appendChild(newDiv);
+  }
+  remove_Child();
 }
+
+function remove_Child() {
+  var div = DivContainer.getElementsByTagName("div")
+  for (let i =0;i <div.length;i++) {
+    //console.log("i = ",div[i]);
+    if (i==2) {
+      var row = div.getElementById("r"+2);
+      console.log("ficha = ",row[i])
+      //row.removeChild("f1");
+    }
+  }
+}
+
 
 /*const main = document.querySelector('.boardgame')
 
