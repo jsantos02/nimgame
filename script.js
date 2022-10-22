@@ -63,18 +63,21 @@ function AddNew() {
     }
     DivContainer.appendChild(newDiv);
   }
-  remove_Child(1,2);
+  remove_Child("r3",0);
 }
 
-function remove_Child() {
+function remove_Child(ro,fic) {
   var div = DivContainer.getElementsByTagName("div")
   for (let i =0;i <div.length;i++) {
     console.log("i = ",div[i]);
     //if (i==2) DivContainer.removeChild(div[i]);
-    if (i==2) {
-      const row = document.getElementById("r"+arguments[0]);
-      var ficha = row.getElementsByTagName("img");
-      row.removeChild(ficha[arguments[1]]);
+    const row = document.getElementById(ro);
+    var ficha = row.getElementsByTagName("img");
+    for(let k=fic ; k < (ficha.length) ; k++){
+      console.log(k<ficha.length);
+      console.log("k = ",k,"ficha = ",ficha.length);
+      row.removeChild(ficha[k]);
+      console.log(k++<ficha.length);
     }
   }
 }
