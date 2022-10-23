@@ -43,8 +43,8 @@ const BtnAdd = document.querySelector(".submit");
 const DivContainer = document.getElementById("boardgame");
 var turn = document.getElementById("playerTurn");
 turn.style.display = "none"; // esconder o menu de escolha de input do player1 , none esconde e block aparece
-var turnPlayer1 = false;
-var turnAI = false; // variaveis de turno globais para qualquer funcao conseguir aceder
+var turnPlayer1;
+var turnAI; // variaveis de turno globais para qualquer funcao conseguir aceder
 
 
 BtnAdd.addEventListener("click", AddNew); // butao de submit do primeiro forms, é o botao que mete a jogar
@@ -92,16 +92,17 @@ function AddNew() { // funcao principar da criacao do tabuleiro e da acao dde jo
       aiPCmove();
       turnAI=invertTurn(turnAI);
     }
-    aux= false; //está como false para so fazer um ciclo
+    aux = false;
   }
 }
 
 function turnPlayer(){ // ler os inputs do player e retirar do tabuleiro
-  var tirarLinha = document.getElementById("tirarLinha").value; //le linha
+  var tirarLinha = document.getElementById("tirarLinha").value-1; //le linha
   var tirarFicha = document.getElementById("tirarFichas").value; // le numero de fichas
   remove_Child("r"+tirarLinha,tirarFicha); // remove ambos
   turnPlayer1=invertTurn(turnPlayer1);
-  
+  aiPCmove();
+  turnPlayer1 = true;
   //troca os turnos
 }
 
@@ -128,7 +129,7 @@ function remove_Child(ro,fic) { // funcao para remover fic numero de pecas de um
     var row = document.getElementById(ro);
     var ficha = row.getElementsByTagName("img");
     if(fic>ficha.length) fic=ficha.length-1;
-    for(let k=fic ; k < (ficha.length) ; k++){
+    for(let k=fic ; k < fic.length ; k++){
       row.removeChild(ficha[k]);
     }
   }
@@ -152,9 +153,9 @@ function drawGame() {
 function easyPCmove() {
   const sizeB = document.getElementById("tabuleiro").value;
   var div = DivContainer.getElementsByTagName("div")
-      var x = Math.floor(Math.random() * sizeB);
-      var y = Math.floor(Math.random() * div.length);
-      remove_Child(x,y);
+  var x = Math.floor(Math.random() * sizeB);
+  var y = Math.floor(Math.random() * div.length);
+  remove_Child(x,y);
 }
 
 function hardPCmove() {
@@ -186,10 +187,6 @@ function aiPCmove() {
   const sizeB = document.getElementById("tabuleiro").value;
   switch(dif) {
     case 'facil':
-      var div = DivContainer.getElementsByTagName("div")
-      var x = Math.floor(Math.random() * sizeB);
-      var y = Math.floor(Math.random() * div.length);
-      remove_Child("r"+x,y);
       easyPCmove();
       break;
       case 'medio':
@@ -200,8 +197,8 @@ function aiPCmove() {
         break;
       case 'dificil':
         hardPCmove();
+         break;
   }
- 
 }
     
     var xor = function() {
