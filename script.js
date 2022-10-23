@@ -42,14 +42,14 @@ function closeModal(modal) {
 const BtnAdd = document.querySelector(".submit");
 const DivContainer = document.getElementById("boardgame");
 var turn = document.getElementById("playerTurn");
-turn.style.display = "none";
+turn.style.display = "none"; // esconder o menu de escolha de input do player1 , none esconde e block aparece
 var turnPlayer1 = false;
-var turnAI = false;
+var turnAI = false; // variaveis de turno globais para qualquer funcao conseguir aceder
 
 
-BtnAdd.addEventListener("click", AddNew);
+BtnAdd.addEventListener("click", AddNew); // butao de submit do primeiro forms, é o botao que mete a jogar
 
-function AddNew() {
+function AddNew() { // funcao principar da criacao do tabuleiro e da acao dde jogo
   var tabuleiro = document.getElementById("tabuleiro").value;
   //newDiv.classList.add('divrow');
   for (let i =0; i< tabuleiro; i++) {
@@ -70,53 +70,55 @@ function AddNew() {
 
 
  
-  var starter= document.getElementById("starter").value;
-  turnPlayer1 = (starter == "jogador1");
+  var starter= document.getElementById("starter").value; // quem vai comecar a jogar
+  turnPlayer1 = (starter == "jogador1"); // variaveis bool para os turnos
   turnAI = (starter !== "jogador1");
   
 
   
   var aux = runningGame();
-  while(aux==true){
-    if(turnPlayer1){ 
+  while(aux==true){    // ciclo principal onde ha as jogadas feitas por cada jogador, as trocas de turnos sao feitas no fim de cada funcao 
+    console.log("correr = ",runningGame());
+    if(turnPlayer1){  // turno do primeoro player
       turn.style.display = "block";
       const BtnPlayer = document.querySelector(".turnPlayer");
       BtnPlayer.addEventListener("click", turnPlayer());
     }
-    else{
+    else{ //turno do AI
       turn.style.display = "none";
       //meter aqui a funcao de ai
     }
-    aux= false;
+    aux= false; //está como false para so fazer um ciclo
   }
 }
 
-function turnPlayer(){
-  var tirarLinha = document.getElementById("tirarLinha").value;
-  var tirarFicha = document.getElementById("tirarFichas").value;
-  remove_Child("r"+tirarLinha,tirarFicha);
+function turnPlayer(){ // ler os inputs do player e retirar do tabuleiro
+  var tirarLinha = document.getElementById("tirarLinha").value; //le linha
+  var tirarFicha = document.getElementById("tirarFichas").value; // le numero de fichas
+  remove_Child("r"+tirarLinha,tirarFicha); // remove ambos
   turnPlayer1=invertTurn(turnPlayer1);
   turnAI=invertTurn(turnAI);
+  //troca os turnos
 }
 
-function runningGame(){
+function runningGame(){ //funcao para verificar se ainda tem peças (nao esta a funcionar no cicli while principal)
   var div = DivContainer.getElementsByTagName("div")
   for (let i =0;i <div.length;i++) {
     var row = document.getElementById("r"+i);
     var ficha = row.getElementsByTagName("img");
     if(ficha.length>0){
-      return true;
+      return true; //caso tenha alguma ficha retorna verdadero
     }
   }
   return false;
 }
 
-function invertTurn(jogador){
+function invertTurn(jogador){  //funcao que inverte um turno
   if (jogador == true) return false;
   else return true;
 }
 
-function remove_Child(ro,fic) {
+function remove_Child(ro,fic) { // funcao para remover fic numero de pecas de uma certa ro linha
   var div = DivContainer.getElementsByTagName("div")
   for (let i =0;i <div.length;i++) {
     var row = document.getElementById(ro);
@@ -184,10 +186,6 @@ function aiPCmove() {
       var x = Math.floor(Math.random() * sizeB);
       var y = Math.floor(Math.random() * div.length);
       remove_Child("r"+x,y);
-  }
-  turnPlayer1=invertTurn(turnPlayer1);
-  turnAI=invertTurn(turnAI);
-}
       easyPCmove();
       break;
       case 'medio':
@@ -198,8 +196,10 @@ function aiPCmove() {
         break;
       case 'dificil':
         hardPCmove();
-      }
-    }
+  }
+  turnPlayer1=invertTurn(turnPlayer1);
+  turnAI=invertTurn(turnAI);
+}
     
     var xor = function() {
       var value = 0; 
