@@ -85,10 +85,12 @@ function AddNew() { // funcao principar da criacao do tabuleiro e da acao dde jo
       btn.onclick = function() {
         turnPlayer();
       }
+      
     }
     else{ //turno do AI
       turn.style.display = "none";
-      //meter aqui a funcao de ai
+      aiPCmove();
+      turnAI=invertTurn(turnAI);
     }
     aux= false; //está como false para so fazer um ciclo
   }
@@ -99,7 +101,7 @@ function turnPlayer(){ // ler os inputs do player e retirar do tabuleiro
   var tirarFicha = document.getElementById("tirarFichas").value; // le numero de fichas
   remove_Child("r"+tirarLinha,tirarFicha); // remove ambos
   turnPlayer1=invertTurn(turnPlayer1);
-  turnAI=invertTurn(turnAI);
+  
   //troca os turnos
 }
 
@@ -199,8 +201,7 @@ function aiPCmove() {
       case 'dificil':
         hardPCmove();
   }
-  turnPlayer1=invertTurn(turnPlayer1);
-  turnAI=invertTurn(turnAI);
+ 
 }
     
     var xor = function() {
