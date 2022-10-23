@@ -69,6 +69,7 @@ function AddNew() {
   }
 
 
+ 
   var starter= document.getElementById("starter").value;
   turnPlayer1 = (starter == "jogador1");
   turnAI = (starter !== "jogador1");
@@ -137,6 +138,43 @@ function winGame() {
   gamewon.innerHTML = "You Won!"
 }
 
+function drawGame() {
+  const gamedraw = document.getElementById("gamestatus");
+  gamedraw.innerHTML = "Draw!"
+}
+
+function easyPCmove() {
+  const sizeB = document.getElementById("tabuleiro").value;
+  var div = DivContainer.getElementsByTagName("div")
+      var x = Math.floor(Math.random() * sizeB);
+      var y = Math.floor(Math.random() * div.length);
+      remove_Child(x,y);
+}
+
+function hardPCmove() {
+  const sizeB = document.getElementById("tabuleiro").value;
+  var div = DivContainer.getElementsByTagName("div");
+         for(let i = 0; i < div.length; i++) {
+          const row = document.getElementById("r"+i);
+          var ficha = row.getElementsByTagName("img");
+          for (let j = 0; j < ficha.length; j++) {
+            var oldVal = ficha[i];
+            ficha[i] = j;
+            if(xor() != 0) {
+              ficha[i] = oldVal;
+            } else {
+              ficha[i] = oldVal; 
+              remove_Child(i,j);
+              return;
+            }
+          }
+         }
+         var x = Math.floor(Math.random() * sizeB);
+         while(div[x] == 0) {
+          x = Math.floor(Math.random() * sizeB);
+         }
+         remove_Child(x, sizeB-1);
+}
 function aiPCmove() {
   const dif = document.getElementById("dificulty").value;
   const sizeB = document.getElementById("tabuleiro").value;
@@ -150,6 +188,27 @@ function aiPCmove() {
   turnPlayer1=invertTurn(turnPlayer1);
   turnAI=invertTurn(turnAI);
 }
+      easyPCmove();
+      break;
+      case 'medio':
+        var rand = Math.floor(Math.random() * 2) 
+        if(rand==0) {
+          easyPCmove();
+        } else hardPCmove();
+        break;
+      case 'dificil':
+        hardPCmove();
+      }
+    }
+    
+    var xor = function() {
+      var value = 0; 
+      var div = DivContainer.getElementsByTagName("div");
+      for(let i=0; i < div.length; i++) {
+        value ^= div[i]
+      }
+      return value;
+    }
 
 /*const main = document.querySelector('.boardgame')
 
