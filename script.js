@@ -81,8 +81,10 @@ function AddNew() { // funcao principar da criacao do tabuleiro e da acao dde jo
     console.log("correr = ",runningGame());
     if(turnPlayer1){  // turno do primeoro player
       turn.style.display = "block";
-      const BtnPlayer = document.querySelector(".turnPlayer");
-      BtnPlayer.addEventListener("click", turnPlayer());
+      var btn = document.getElementById("turnPlayer");
+      btn.onclick = function() {
+        turnPlayer();
+      }
     }
     else{ //turno do AI
       turn.style.display = "none";
