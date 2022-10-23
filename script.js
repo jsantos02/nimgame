@@ -38,11 +38,13 @@ function closeModal(modal) {
   overlay.classList.remove('active')
 }
 
-//coisas do tabuleiro a partir daqui
+//coisas do tabuleiro a partir daqui -------------------------------------------------------------------------------------------------------------------------------------------------------------
 const BtnAdd = document.querySelector(".submit");
 const DivContainer = document.getElementById("boardgame");
 var turn = document.getElementById("playerTurn");
 turn.style.display = "none";
+var turnPlayer1 = false;
+var turnAI = false;
 
 
 BtnAdd.addEventListener("click", AddNew);
@@ -65,46 +67,63 @@ function AddNew() {
     }
     DivContainer.appendChild(newDiv);
   }
+
+
   var starter= document.getElementById("starter").value;
-  var turnPlayer1 = (starter == "jogador1");
-  var turnAI = (starter !== "jogador1");
-  var aux = false;
-  while(!emptyGame(aux)){
+  turnPlayer1 = (starter == "jogador1");
+  turnAI = (starter !== "jogador1");
+  
+
+  
+  var aux = runningGame();
+  while(aux==true){
     if(turnPlayer1){ 
       turn.style.display = "block";
       const BtnPlayer = document.querySelector(".turnPlayer");
-      BtnPlayer.addEventListener("click", turnPlayer);
+      BtnPlayer.addEventListener("click", turnPlayer());
+      //while(!a_jogar){console.log("a");}
     }
     else{
       turn.style.display = "none";
+      //meter aqui a funcao de ai
     }
-    invertTurn(turnPlayer1,turnAI);
-    aux=true;
+    console.log("turn p1 = ",turnPlayer1);
+    console.log("turn p1 depois = ",turnPlayer1);
+    aux=false;
   }
 }
 
 function turnPlayer(){
   var tirarLinha = document.getElementById("tirarLinha").value;
   var tirarFicha = document.getElementById("tirarFichas").value;
-  console.log("linha ",tirarLinha," ficha = ",tirarFicha);
   remove_Child("r"+tirarLinha,tirarFicha);
+  turnPlayer1=invertTurn(turnPlayer1);
+  turnAI=invertTurn(turnAI);
 }
 
-function emptyGame(r){
-  return r;
+function runningGame(){
+  var div = DivContainer.getElementsByTagName("div")
+  for (let i =0;i <div.length;i++) {
+    var row = document.getElementById("r"+i);
+    var ficha = row.getElementsByTagName("img");
+    if(ficha.length>0){
+      return true;
+    }
+  }
+  return false;
 }
 
-function invertTurn(jogador1,jogador2){
-  jogador1= !jogador1;
-  jogador2= !jogador2;
+function invertTurn(jogador){
+  if (jogador == true) return false;
+  else return true;
 }
 
 function remove_Child(ro,fic) {
   var div = DivContainer.getElementsByTagName("div")
   for (let i =0;i <div.length;i++) {
-    const row = document.getElementById(ro);
+    var row = document.getElementById(ro);
     var ficha = row.getElementsByTagName("img");
-    //if (fic>ficha.length) errorMsg("Jogada inválida"); FALTA AREA PARA DIZER  DE QUEM É A JOGAR E AS JOGADAS INVALIDAS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    if(fic>ficha.length) fic=ficha.length-1;
     for(let k=fic ; k < (ficha.length) ; k++){
       row.removeChild(ficha[k]);
     }
@@ -121,11 +140,6 @@ function winGame() {
   gamewon.innerHTML = "You Won!"
 }
 
-function drawGame() {
-  const gamedraw = document.getElementById("gamestatus");
-  gamedraw.innerHTML = "Draw!"
-}
-
 function aiPCmove() {
   const dif = document.getElementById("dificulty").value;
   const sizeB = document.getElementById("tabuleiro").value;
@@ -134,9 +148,8 @@ function aiPCmove() {
       var div = DivContainer.getElementsByTagName("div")
       var x = Math.floor(Math.random() * sizeB);
       var y = Math.floor(Math.random() * div.length);
-      remove_Child(x,y);
+      remove_Child("r"+x,y);
   }
- 
 }
 
 /*const main = document.querySelector('.boardgame')
