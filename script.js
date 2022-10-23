@@ -81,15 +81,12 @@ function AddNew() {
       turn.style.display = "block";
       const BtnPlayer = document.querySelector(".turnPlayer");
       BtnPlayer.addEventListener("click", turnPlayer());
-      //while(!a_jogar){console.log("a");}
     }
     else{
       turn.style.display = "none";
       //meter aqui a funcao de ai
     }
-    console.log("turn p1 = ",turnPlayer1);
-    console.log("turn p1 depois = ",turnPlayer1);
-    aux=false;
+    aux= false;
   }
 }
 
@@ -150,6 +147,8 @@ function aiPCmove() {
       var y = Math.floor(Math.random() * div.length);
       remove_Child("r"+x,y);
   }
+  turnPlayer1=invertTurn(turnPlayer1);
+  turnAI=invertTurn(turnAI);
 }
 
 /*const main = document.querySelector('.boardgame')
