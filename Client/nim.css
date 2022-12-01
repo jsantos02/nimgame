@@ -1,0 +1,311 @@
+body{
+	background-color: #98AFC7;
+}
+
+@font-face {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#menu{
+	width: 100%;
+	display: inline-block;
+	position: relative;
+}
+
+.logoImg{
+	width: 100px;
+	height: 83px;
+	cursor: pointer;
+}
+
+.bigList{
+	text-align: center;
+	vertical-align: middle;
+	width: 50%;
+  	margin: 0 auto;
+  	display: inline-block;
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%,-50%);
+  	min-width: 550px;
+}
+
+.buttonList{
+	display: inline;
+}
+
+.buttonList a{
+	font-size: 150%;
+	font-weight: bold;
+	font-family:  Arial, Helvetica, sans-serif;
+	color: darkblue;
+    text-align: center;
+    padding: 4.5% 5%;
+    text-decoration: none;
+}
+
+.buttonList a:hover{
+/*	background-color: #5CB3FF; */
+	cursor: pointer;
+} 
+
+#showLoginDiv {
+    font-family:  Arial, Helvetica, sans-serif;
+    width: 10%;
+    display: none;
+    float: right;
+}
+
+#homeImage{
+	width: 20%;
+	height: 20%;
+	margin: auto;
+	display: block;
+}
+
+#homeTextDiv{
+	text-align: center;
+	font-family:  Arial, Helvetica, sans-serif;
+	width: 100%;
+	margin: 0 auto;
+	font-size: 200%;
+}
+
+#restartGameButton{
+	padding: 5px 10px 5px 10px;
+	font-size: 20px;
+	font-family:  Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	background-color:#5CB3FF;
+
+	margin: 0 auto;
+	align-items: center;
+	display: flex;
+}
+
+#restartGameDiv{
+	z-index: 10;
+	position: relative;
+	display: none;
+}
+
+#leaveGameDiv{
+	z-index: 10;
+	position: relative;
+	display: none;
+	padding-top: 25px;
+}
+
+#logoutButton, #startButton {
+	background-color:#5CB3FF;
+
+}
+
+#leaveGameButton{
+	padding: 5px 10px 5px 10px;
+	font-size: 20px;
+	font-family:  Arial, Helvetica, sans-serif;
+	background-color:#5CB3FF;
+	font-weight: bold;
+	margin: 0 auto;
+	align-items: center;
+	display: flex;
+}
+
+#loginButton{
+	padding: 5px 10px 5px 10px;
+	font-size: 20px;
+	background-color:#5CB3FF;
+	font-family:  Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	margin: 0 auto;
+	margin-top: 20px;
+	float: left;
+	display: flex;
+}
+
+#rankbuttons{
+	width: 203px;
+	background-color:#5CB3FF;
+
+	margin: 0 auto;
+}
+
+#singleplayerRankingButton{
+	font-size: 20px;
+	font-family:  Arial, Helvetica, sans-serif;
+	background-color:#5CB3FF;
+
+	font-weight: bold;
+	margin: 0 auto;
+}
+
+#multiplayerRankingButton{
+	font-size: 20px;
+	font-family:  Arial, Helvetica, sans-serif;
+	background-color:#5CB3FF;
+
+	font-weight: bold;
+	margin: 0 auto;
+}
+
+#multiplayerRankingProcessButton{
+	font-size: 13px;
+	font-family:  Arial, Helvetica, sans-serif;
+	background-color:#5CB3FF;
+
+	font-weight: bold;
+	margin: 0 auto;
+}
+
+#process{
+	width: 255px;
+	margin: 0 auto;
+}
+#inputSizeRankings{
+	margin: 0 auto;
+}
+
+#wrongPasswordText{
+	font-size: 100%;
+	color: red;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	display: none;
+}
+
+#wrongBoardSizeText{
+	font-size: 100%;
+	color: red;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	display: none;
+}
+
+#rulesDiv{
+	font-family:  Arial, Helvetica, sans-serif;
+	text-align: center;
+	width: 60%;
+	margin: 0 auto;
+	font-size: 150%;
+	display: block;
+}
+
+#rulesDiv h1{
+	font-size: 190%;
+}
+
+.boardDiv{
+	text-align: center;
+	margin: 0 auto;
+	padding-top: 35px;
+}
+
+.boardDiv img{
+	width: 80px;
+	height: 80px;
+}
+
+.cellDiv{
+	width: 90px;
+	display: inline-block;
+}
+
+.pieceDiv{
+	width: 90px;
+	display: inline-block;
+}
+
+#messageH1{
+	text-align: center;
+	padding-bottom: 5px;
+	font-family:  Arial, Helvetica, sans-serif;
+}
+
+#gameFormDiv{
+	position: absolute;
+	font-weight: bold;
+	font-size: 20px;
+	border-radius: 8px;
+	border-color: black;
+	border-style: solid;
+	padding: 10px;
+	margin-top: 30px;
+	font-family:  Arial, Helvetica, sans-serif;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 350px;
+}
+
+#gameFormDiv h1{
+	font-size: 120%;
+}
+
+#userTitle{
+	margin-top: 0;
+	margin-bottom: 3px;
+}
+
+#startButton{
+	padding: 5px 10px 5px 10px;
+	font-size: 20px;
+	font-family:  Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	margin: 0 auto;
+	align-items: center;
+	background-color:#5CB3FF;
+
+	display: flex;
+}
+
+#checkButton{
+	font-family:  Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	display: block;
+	background-color:#5CB3FF;
+
+	float:left;
+}
+
+#userInput{
+	float: left;
+	width: 95px;
+	height: 25px;
+}
+
+#passwordInputDiv{
+	margin-left: 20px;
+	display: inline-block;
+}
+
+#passwordInput{
+	width: 95px;
+	height: 25px;
+}
+
+.pieceHovered{
+	filter: invert(100%);
+}
+
+.pieceDeleted{
+	visibility: hidden;
+}
+
+.rankings{
+	text-align:center;
+	font-family:  Arial, Helvetica, sans-serif;
+	margin: 0 auto;
+	width: 60%;
+}
+
+.rankings table{
+	margin: 0 auto;
+}
+
+td,th {
+	border: 1px solid black;
+	padding: 8px;
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jogo NIM</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="nim.css">
+</head>
+<body onload="showFrontPage()">
+
+	<div id="menu">
+		<img class="logoImg" src="https://cdn.discordapp.com/attachments/760658720136495114/1034021701194895400/Binary_tree_v2.png" alt="logo" onclick="showFrontPage()">
+		<div class="bigList">
+			<ul class="buttonList">
+				<li class="buttonList"><a onclick="showGameForm(true, true)">Jogar</a></li>
+				<li class="buttonList"><a onclick="showRanks()">Ranking</a></li>
+				<li class="buttonList"><a onclick="showRules()">Regras</a></li>
+			</ul>
+		</div>
+		<div id="showLoginDiv">
+			<h3 id="showLoginText">Bem-vindo!</h3>
+			<button id="logoutButton" onclick="logout()">Logout</button>
+		</div>
+	</div>
+	<hr>
+
+	<div id="homePageDiv">
+		<img id="homeImage" src="https://cdn.discordapp.com/attachments/760658720136495114/1034021701194895400/Binary_tree_v2.png" alt="logo">
+		<div id="homeTextDiv">
+			<br>
+			<p><b>Bem-vindo ao Jogo NIM!</b></p>
+	
+			<p>Clica em Jogar para começar.</p>
+		</div>
+	</div>
+
+	<div id="gameFormDiv">
+		<div id="loginDiv">
+			<h1>USERNAME &amp; PASSWORD</h1>
+			<form id="userInputForm" action="javascript:void(0)">
+				<input id="userInput" type="text" placeholder="Username" name="username">
+				<div id="passwordInputDiv">
+					<input id="passwordInput" type="password" placeholder="Password" name="password">
+				</div>
+			</form>
+			<h5 id="wrongPasswordText">Password errada!</h5>
+			<button id="loginButton" onclick="login()">Login</button>
+		</div>
+		<div id="gameTypeDiv">
+			<h1>MODO DE JOGO</h1>
+			<form id="gameTypeForm">
+				<input type="radio" name="gameTypeButton" value="singleplayer" onclick="showSingleplayerOptions()" checked> Contra o Computador<br>
+				<input type="radio" name="gameTypeButton" value="multiplayer" onclick="showMultiplayerOptions()"> Multijogador<br>
+			</form>
+		</div>
+		<div id="optionsDiv">
+			<div id="singleplayerOptionsDiv">
+				<h1>DIFICULDADE</h1>
+				<form id="difficultyForm" action="javascript:void(0)">
+					<input type="radio" name="difficultyButton" value="easy" checked> Fácil<br>
+		  			<input type="radio" name="difficultyButton" value="normal"> Médio<br>
+		 			<input type="radio" name="difficultyButton" value="hard"> Díficil<br>
+				</form>
+				<h1>PRIMEIRO JOGADOR</h1>
+				<form id="playFirstForm" action="javascript:void(0)">
+					<input type="radio" name="playFirstButton" value="player" checked> Eu<br>
+		  			<input type="radio" name="playFirstButton" value="pc"> Computador<br>
+				</form>
+			</div>
+			<div id="multiplayerOptionsDiv">
+				<h1>TAMANHO DO TABULEIRO</h1>
+				<form id="boardSizeForm" action="javascript:void(0)">
+					<input type="text" placeholder="Ex.: 5" name="boardSizeInput"><br>
+				</form>
+				<h5 id="wrongBoardSizeText">TAMANHO INVÁLIDO!</h5>
+				<br>
+				<button id="startButton" onclick="playGame()">JOGAR!</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="gameDiv"></div>
+
+	<div id="restartGameDiv">
+		<button id="restartGameButton" onclick="restartGame()">Outro jogo?</button>
+	</div>
+
+	<div id="leaveGameDiv">
+		<button id="leaveGameButton" onclick="leaveGame()">SAIR</button>
+	</div>
+
+	<div id="rankingDiv">
+		<div id="rankbuttons">
+			<button id="singleplayerRankingButton" onclick="showSingleplayerRanks()">Contra o computador</button>
+			<button id="multiplayerRankingButton" onclick="showMultiplayerRanksBoardSizeInput()">Multijogador</button>
+		</div>
+		<form id="boardSizeFormRanks" action="javascript:void(0)">
+			<div id="process">
+				<br>
+				<input id="inputSizeRankings" type="text" placeholder="Ex.: 5" name="boardSizeInputRanks">
+				<br>
+				<button id="multiplayerRankingProcessButton" onclick="showMultiplayerRanks(document.getElementById('boardSizeFormRanks').elements['boardSizeInputRanks'].value)">Processar</button>
+			</div>
+		</form>
+		<div id="tableRankingDiv" class='rankings'></div>
+	</div>
+
+	<div id="rulesDiv">
+		<h1>O que é o NIM?</h1>
+		
+			<p>O Nim é um jogo matemático de estratégia em que dois jogadores alternadamente removem objetos (contas, grãos, fosforos) de diferentes pilhas. 
+			<br>
+			A cada jogada, o jogador deve remover pelo menos um objeto de um pilha e todos os objetos removidos devem pertencer à mesma pilha. 
+			<br>
+			O objetivo do jogo é remover o último objeto. (Alternativamente, o objetivo pode ser evitar tirar o último objeto - "à lá misére").</p>
+		
+		
+		<h1>Regras</h1>
+		<p>	<b>1.</b>  O jogo contém uma ou mais pilhas de peças, com um número determinado de peças em cada uma.
+		<br>		 
+		<br>
+		<b>2.</b> Os movimentos são feitos por turnos e em cada turno só um jogador pode jogar. Esse jogador pode tirar uma ou mais peças de uma pilha.
+		<br>	
+		<br>
+		<b>3.</b> No final, o jogador que tirar a última peça, ganha.
+		</p>	
+	</div>
+
+	<script src="game.js"></script>
+</body>
+</html>
