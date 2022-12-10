@@ -9,11 +9,11 @@ var mainGame;
 var gameInProgress = false;
 var evtSource;
 var timeOutMessage;
-var timer;
+
 var timeLeft;
 var singleORmulti;
 
-var url = "http://127.0.0.1:8016/";
+var url = "http://twserver.alunos.dcc.fc.up.pt:8008/";
 
 function showFrontPage(){
 	for(var i=0; i<divsArray.length; i++)
@@ -57,6 +57,7 @@ function showGameForm(goodPassword, goodBoardSize){
 	}
 	else{
 		document.getElementById("loginDiv").style.display = "none";
+		document.getElementById("signUpDiv").style.display = "none";
 		document.getElementById("optionsDiv").style.display = "block";
 		document.getElementById("gameTypeDiv").style.display = "block";
 
@@ -225,12 +226,7 @@ function playGame(){
 		messageH.id = "messageH1";
 		document.getElementById("gameDiv").appendChild(messageH);
 
-		var timerH = document.createElement("h2");
-		timerH.id = "timerH2";
-		document.getElementById("gameDiv").appendChild(timerH);
-
-		setTimer();
-
+	
 		showGameDiv();
 
 		singleORmulti = "multi";
@@ -269,36 +265,6 @@ function playGame(){
 	}
 }
 
-function setTimer(){
-	timeLeft = 60000;
-	clearInterval(timer);
-	timer = setInterval(function() {
-
-		// Time calculations for days, hours, minutes and seconds
-		var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-		// Display the result in the element with id="demo"
-		document.getElementById("timerH2").innerHTML = minutes + "m " + seconds + "s ";
-
-		// If the count down is finished, write some text
-		if (timeLeft <= 0) {
-			clearInterval(timer);
-			if(singleORmulti == "single")
-				document.getElementById("timerH2").innerHTML = "Time to play exceeded!";
-			else
-				document.getElementById("timerH2").innerHTML = "Time to find an opponent exceeded!";
-			document.getElementById("leaveGameDiv").style.display = "none";
-			if(document.getElementById("boardDiv")!=null)
-				document.getElementById("boardDiv").style.display = "none";
-			gameInProgress = false;
-			leaveGame();
-		}
-
-		timeLeft=timeLeft-1000;
-	}, 1000);
-}
-
 function restartGame(){
 	playGame();
 }
@@ -307,7 +273,7 @@ function login(){
 	username = document.getElementById("userInput").value;
 	password = document.getElementById("passwordInput").value;
 
-	var js_obj = {"nick": username, "pass": password};
+	var js_obj = {"nick": username, "password": password};
 	var json = JSON.stringify(js_obj);
 
 	var xhr = new XMLHttpRequest();
@@ -317,11 +283,8 @@ function login(){
 		if(this.readyState < 4)
 			return;
 		else if(this.status == 200){
-			document.getElementById("showLoginDiv").style.display = "block";
-			document.getElementById("showLoginText").innerHTML = "Bem-vindo, " + username + "!";
-
+			
 			loginFlag=true;
-
 			if(localStorage[username] == null)
 				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
 
@@ -333,6 +296,47 @@ function login(){
 
 	xhr.send(json);
 }
+
+function loginUponReg(){
+	username = document.getElementById("userReg").value;
+	password = document.getElementById("passwordReg").value;
+
+	var js_obj = {"nick": username, "password": password};
+	var json = JSON.stringify(js_obj);
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url+"register", true);
+	
+	xhr.onreadystatechange = function() {
+		if(this.readyState < 4)
+			return;
+		else if(this.status == 200){
+			loginFlag=true;
+			if(localStorage[username] == null)
+				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
+
+			showGameForm(true, true);
+		}
+		else if(this.status == 400)
+			showGameForm(false, true);
+	}
+
+	xhr.send(json);
+}
+
+function signUp() {
+	username = document.getElementById("userReg").value;
+	password = document.getElementById("passwordReg").value;
+
+	const data = {"nick": username, "pass": password};
+
+	fetch(url+"register",{
+		method:"POST",
+		body: JSON.stringify(data),
+	})
+	.then(loginUponReg);
+}
+
 
 function logout(){
 	if(gameInProgress){
@@ -401,9 +405,7 @@ function nimGame(dif, firstPlayer, boardSize){
 		messageH.id = "messageH1";
 		document.getElementById("gameDiv").appendChild(messageH);
 
-		var timerH = document.createElement("h2");
-		timerH.id = "timerH2";
-		document.getElementById("gameDiv").appendChild(timerH);
+	
 
 		this.board.createBoard();
 
@@ -421,11 +423,11 @@ function nimGame(dif, firstPlayer, boardSize){
 	this.updateMessageDiv = function(){
 		if((this.moves%2==0 && this.firstPlayer=="player") || (this.moves%2!=0 && this.firstPlayer!="player")){
 			document.getElementById("messageH1").innerHTML = "É a vez de <ins>" + username + "</ins>!";
-			setTimer();
+			
 		}
 		else{
 			document.getElementById("messageH1").innerHTML = "É a vez do <ins>Computador</ins>!";
-			setTimer();
+			
 		}
 	}
 
@@ -480,7 +482,7 @@ function nimGame(dif, firstPlayer, boardSize){
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
-		document.getElementById("timerH2").style.display = "none";
+		
 	}
 
 	this.leave = function(){
@@ -495,9 +497,9 @@ function nimGame(dif, firstPlayer, boardSize){
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
-		document.getElementById("timerH2").style.display = "none";
+		
 
-		clearInterval(timer);
+		
 	}
 }
 
@@ -524,7 +526,7 @@ function nimOnlineGame(gameId, boardSize){
 		document.getElementById("messageH1").innerHTML = "É a vez do <ins>" + this.turn + "</ins>!";
 	}
 
-	this.deletePiece = function(x, y){
+	this.deletePiece = function(x, y){                     // função notify
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", url+"notify", true);
 
@@ -563,8 +565,7 @@ function nimOnlineGame(gameId, boardSize){
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
-		document.getElementById("timerH2").style.display = "none";
-		clearInterval(timer);
+		
 		evtSource.close();
 	}
 
@@ -583,7 +584,7 @@ function nimOnlineGame(gameId, boardSize){
 
 		xhr.send(JSON.stringify({"nick": username, "pass": password, "game": this.gameId}));
 
-		clearInterval(timer);
+		
 	}
 }
 
@@ -712,9 +713,6 @@ function initiateEventSource(gameId){
 
 	evtSource.onmessage = function(packet){
 		var json = JSON.parse(packet.data);
-
-		//console.log(json);
-
 		if(json["turn"]!=null){
 			if(json["stack"]!=null){
 				var x = json["stack"];
@@ -722,22 +720,12 @@ function initiateEventSource(gameId){
 				mainGame.deletePieceConfirmation(x, y);
 				mainGame.turn = json["turn"];
 				mainGame.updateMessageDiv();
-				if(mainGame.turn==username)
-					setTimer();
-				else{
-					clearInterval(timer);
-					document.getElementById("timerH2").innerHTML = "1m 0s"
-				}
+			
 			}
 			else{
 				var firstPlayer = json["turn"];
 				mainGame.initiateGame(firstPlayer);
-				if(firstPlayer==username)
-					setTimer();
-				else{
-					clearInterval(timer);
-					document.getElementById("timerH2").innerHTML = "1m 0s"
-				}
+				
 			}
 		}
 		else if(json["winner"]!=null){
