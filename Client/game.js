@@ -1,28 +1,28 @@
 "use strict";
 
-var usrname;
+var username;
 var password;
 var group = 16;
 var loginFlag = false;
 var divsArray = ["homePageDiv", "gameFormDiv", "gameDiv", "restartGameDiv", "leaveGameDiv", "rankingDiv", "rulesDiv"];
 var mainGame;
-var gameRunning = false;
-var evtSource; // event source
+var gameInProgress = false;
+var evtSource;
 var timeOutMessage;
-
+var timer;
 var timeLeft;
-var singleORmulti; // tipo de jogo
+var singleORmulti;
 
 var url = "http://twserver.alunos.dcc.fc.up.pt:8008/";
 
-function showMainPage(){
+function showFrontPage(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
 
 	document.getElementById("homePageDiv").style.display = "block";
 }
 
-function singleplayerOptions(){
+function showSingleplayerOptions(){
 	document.getElementById("singleplayerOptionsDiv").style.display = "block";
 	document.getElementById("multiplayerOptionsDiv").style.display = "block";
 }
@@ -35,17 +35,21 @@ function showMultiplayerOptions(){
 function showGameForm(goodPassword, goodBoardSize){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
-	if(gameRunning){
+
+	if(gameInProgress){
 		document.getElementById("gameDiv").style.display = "block";
 		document.getElementById("leaveGameDiv").style.display = "block";
 		return;
 	}
+
 	document.getElementById("userInputForm").reset();
 	document.getElementById("gameTypeForm").reset();
 	document.getElementById("difficultyForm").reset();
 	document.getElementById("playFirstForm").reset();
 	document.getElementById("boardSizeForm").reset();
+
 	document.getElementById("gameFormDiv").style.display = "block";
+
 	if(loginFlag==false){
 		document.getElementById("loginDiv").style.display = "block";
 		document.getElementById("gameTypeDiv").style.display = "none";
@@ -60,10 +64,11 @@ function showGameForm(goodPassword, goodBoardSize){
 		var spORmp = document.getElementById("gameTypeForm").elements["gameTypeButton"].value;
 
 		if(spORmp == "singleplayer")
-			singleplayerOptions();
+			showSingleplayerOptions();
 		else
 			showMultiplayerOptions();
 	}
+
 	if(goodPassword)
 		document.getElementById("wrongPasswordText").style.display = "none";
 	else
@@ -78,23 +83,46 @@ function showGameForm(goodPassword, goodBoardSize){
 function showRanks(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
+
 	document.getElementById("rankingDiv").style.display = "block";
+
 	showSingleplayerRanks();
 }
 
 function showSingleplayerRanks(){
 	document.getElementById("boardSizeFormRanks").style.display = "none";
+
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
+
 	document.getElementById("rankingDiv").style.display = "block";
-	var finalText = "<div class='rankings'>" + "<table>" + "<tr>" + "<th>Jogador</th>" + "<th>Total de Jogos</th>" + "<th>Vitórias</th>" + "<th>Derrotas</th>" + "<th>Percentagem de vitórias</th>" + "</tr>";
+		
+	var finalText = 
+		"<div class='rankings'>" +
+			"<table>" +
+				"<tr>" +
+					"<th>Jogador</th>" +
+							"<th>Total de Jogos</th>" +
+							"<th>Vitórias</th>" +
+							"<th>Derrotas</th>" +
+							"<th>Percentagem de vitórias</th>" +
+				"</tr>";
 	for(var i=0; i<localStorage.length; i++){
 		var jsonUsername = localStorage.key(i);
 		var json = JSON.parse(localStorage.getItem(localStorage.key(i)));
-		finalText += "<tr>" + "<td>" + jsonUsername + "</td>" + "<td>" + json.games + "</td>" + "<td>" + json.victories + "</td>" + "<td>" + (json.games - json.victories) + "</td>" + "<td>" + ((json.victories / json.games)*100).toFixed(2) + "%" + "</td>";
+		finalText += 
+			"<tr>" +
+				"<td>" + jsonUsername + "</td>" +
+				"<td>" + json.games + "</td>" +
+				"<td>" + json.victories + "</td>" +
+				"<td>" + (json.games - json.victories) + "</td>" +
+				"<td>" + ((json.victories / json.games)*100).toFixed(2) + "%" + "</td>";
 		finalText += "</tr>";
 	}
-	finalText += "</table>" + "</div>";
+	finalText += 
+			"</table>" +
+		"</div>";
+
 	document.getElementById("tableRankingDiv").innerHTML = finalText;
 }
 
@@ -108,9 +136,11 @@ function showMultiplayerRanks(boardSize){
 	xhr.open("POST", url+"ranking", true);
 
 	xhr.onreadystatechange = function() {
-		if(this.readyState < 4) return;
+		if(this.readyState < 4)
+			return;
 		else if(this.status == 200){
 			var json = JSON.parse(this.responseText)["ranking"];
+			
 			var finalText = 
 				"<div class='rankings'>" +
 					"<table>" +
@@ -139,7 +169,8 @@ function showMultiplayerRanks(boardSize){
 				"</div>";
 
 			document.getElementById("tableRankingDiv").innerHTML = finalText;
-		} else if(this.status == 400)
+		}
+		else if(this.status == 400)
 			document.getElementById("tableRankingDiv").innerHTML = "Número inválido";
 	}
 
@@ -149,12 +180,14 @@ function showMultiplayerRanks(boardSize){
 function showRules(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
+
 	document.getElementById("rulesDiv").style.display = "block";
 }
 
 function showGameDiv(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
+
 	document.getElementById("gameDiv").style.display = "block";
 }
 
@@ -164,7 +197,7 @@ function resetGameDiv(){
 		elem.removeChild(elem.firstChild);
 }
 
-function playGame(){ // funcao para jogar
+function playGame(){
 	if(document.getElementById("gameTypeForm").elements["gameTypeButton"].value == "singleplayer"){
 
 		var dif = document.getElementById("difficultyForm").elements["difficultyButton"].value;
@@ -193,7 +226,10 @@ function playGame(){ // funcao para jogar
 		messageH.id = "messageH1";
 		document.getElementById("gameDiv").appendChild(messageH);
 
-	
+		var timerH = document.createElement("h2");
+		timerH.id = "timerH2";
+		document.getElementById("gameDiv").appendChild(timerH);
+		setTimer();
 		showGameDiv();
 
 		singleORmulti = "multi";
@@ -209,7 +245,7 @@ function playGame(){ // funcao para jogar
 
 				initiateEventSource(gameId);
 
-				gameRunning = true;
+				gameInProgress = true;
 
 				messageH.innerHTML = "À espera de oponente";
 
@@ -228,19 +264,44 @@ function playGame(){ // funcao para jogar
 				messageH.innerHTML = "Erro! Não foi possível ligar ao servidor.";
 		}
 
-		xhr.send(JSON.stringify({"group": group, "nick": usrname, "pass": password, "size": boardSize}));
+		xhr.send(JSON.stringify({"group": group, "nick": username, "password": password, "size": boardSize}));
 	}
 }
+function setTimer(){
+	timeLeft = 60000;
+	clearInterval(timer);
+	timer = setInterval(function() {
 
+		var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+		document.getElementById("timerH2").innerHTML = minutes + "m " + seconds + "s ";
+
+		if (timeLeft <= 0) {
+			clearInterval(timer);
+			if(singleORmulti == "single")
+				document.getElementById("timerH2").innerHTML = "Tempo para jogar esgotou";
+			else
+				document.getElementById("timerH2").innerHTML = "Não foi encontrado um oponente";
+			document.getElementById("leaveGameDiv").style.display = "none";
+			if(document.getElementById("boardDiv")!=null)
+				document.getElementById("boardDiv").style.display = "none";
+			gameInProgress = false;
+			leaveGame();
+		}
+
+		timeLeft=timeLeft-1000;
+	}, 1000);
+}
 function restartGame(){
 	playGame();
 }
 
 function login(){
-	usrname = document.getElementById("userInput").value;
+	username = document.getElementById("userInput").value;
 	password = document.getElementById("passwordInput").value;
 
-	var js_obj = {"nick": usrname, "password": password};
+	var js_obj = {"nick": username, "password": password};
 	var json = JSON.stringify(js_obj);
 
 	var xhr = new XMLHttpRequest();
@@ -250,10 +311,11 @@ function login(){
 		if(this.readyState < 4)
 			return;
 		else if(this.status == 200){
-			
+			document.getElementById("showLoginDiv").style.display = "block";
+			document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim," + username;
 			loginFlag=true;
-			if(localStorage[usrname] == null)
-				localStorage[usrname] = JSON.stringify({"victories": 0, "games": 0});
+			if(localStorage[username] == null)
+				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
 
 			showGameForm(true, true);
 		}
@@ -265,10 +327,10 @@ function login(){
 }
 
 function loginUponReg(){
-	usrname = document.getElementById("userReg").value;
+	username = document.getElementById("userReg").value;
 	password = document.getElementById("passwordReg").value;
 
-	var js_obj = {"nick": usrname, "password": password};
+	var js_obj = {"nick": username, "password": password};
 	var json = JSON.stringify(js_obj);
 	
 	var xhr = new XMLHttpRequest();
@@ -278,9 +340,11 @@ function loginUponReg(){
 		if(this.readyState < 4)
 			return;
 		else if(this.status == 200){
+			document.getElementById("showLoginDiv").style.display = "block";
+			document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim," + username;
 			loginFlag=true;
-			if(localStorage[usrname] == null)
-				localStorage[usrname] = JSON.stringify({"victories": 0, "games": 0});
+			if(localStorage[username] == null)
+				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
 
 			showGameForm(true, true);
 		}
@@ -292,10 +356,10 @@ function loginUponReg(){
 }
 
 function signUp() {
-	usrname = document.getElementById("userReg").value;
+	username = document.getElementById("userReg").value;
 	password = document.getElementById("passwordReg").value;
 
-	const data = {"nick": usrname, "pass": password};
+	const data = {"nick": username, "password": password};
 
 	fetch(url+"register",{
 		method:"POST",
@@ -306,16 +370,16 @@ function signUp() {
 
 
 function logout(){
-	if(gameRunning){
-		document.getElementById("showLoginText").innerHTML = "Error: Game in progress.";
-		setTimeout(function(){ document.getElementById("showLoginText").innerHTML = "Welcome, " + usrname + "!"; }, 4000);
+	if(gameInProgress){
+		document.getElementById("showLoginText").innerHTML = "Não podes sair enquanto o jogo está em progresso!";
+		setTimeout(function(){ document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim," + username; }, 4000);
 		return;
 	}
 
 	document.getElementById("showLoginDiv").style.display = "none";
 
 	loginFlag=false;
-	showMainPage();
+	showFrontPage();
 }
 
 function leaveGame(){
@@ -364,7 +428,7 @@ function nimGame(dif, firstPlayer, boardSize){
 		this.pc = new PC(this.dif);
 		this.moves = 0;
 
-		gameRunning = true;
+		gameInProgress = true;
 
 		resetGameDiv();
 
@@ -373,6 +437,9 @@ function nimGame(dif, firstPlayer, boardSize){
 		document.getElementById("gameDiv").appendChild(messageH);
 
 	
+		var timerH = document.createElement("h2");
+		timerH.id = "timerH2";
+		document.getElementById("gameDiv").appendChild(timerH);
 
 		this.board.createBoard();
 
@@ -389,12 +456,12 @@ function nimGame(dif, firstPlayer, boardSize){
 
 	this.updateMessageDiv = function(){
 		if((this.moves%2==0 && this.firstPlayer=="player") || (this.moves%2!=0 && this.firstPlayer!="player")){
-			document.getElementById("messageH1").innerHTML = "É a vez de <ins>" + usrname + "</ins>!";
-			
+			document.getElementById("messageH1").innerHTML = "É a vez de <ins>" + username + "</ins>!";
+			setTimer();
 		}
 		else{
 			document.getElementById("messageH1").innerHTML = "É a vez do <ins>Computador</ins>!";
-			
+			setTimer();
 		}
 	}
 
@@ -411,7 +478,7 @@ function nimGame(dif, firstPlayer, boardSize){
 
 		this.moves++;
 
-		if(gameRunning==true)
+		if(gameInProgress==true)
 			this.updateMessageDiv();
 
 		var _this = this;
@@ -431,41 +498,43 @@ function nimGame(dif, firstPlayer, boardSize){
 
 	this.endGame = function(){
 		if((this.moves%2==0 && this.firstPlayer=="player") || (this.moves%2!=0 && this.firstPlayer!="player")){
-			var json = JSON.parse(localStorage[usrname])
+			var json = JSON.parse(localStorage[username])
 			json["games"]++;
 			json["victories"]++;
-			localStorage[usrname] = JSON.stringify(json);
-			document.getElementById("messageH1").innerHTML = "VITÓRIA! 🏆";
+			localStorage[username] = JSON.stringify(json);
+			document.getElementById("messageH1").innerHTML = "VITÓRIA! 🏆🥇";
 		}
 		else{
-			var json = JSON.parse(localStorage[usrname])
+			var json = JSON.parse(localStorage[username])
 			json["games"]++;
-			localStorage[usrname] = JSON.stringify(json);
-			document.getElementById("messageH1").innerHTML = "Perdeu 😔";
+			localStorage[username] = JSON.stringify(json);
+			document.getElementById("messageH1").innerHTML = "Perdeu 😔. Tenta outra vez!";
 		}
 
-		gameRunning = false;
+		gameInProgress = false;
 
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
+		document.getElementById("timerH2").style.display = "none";
 		
 	}
 
 	this.leave = function(){
 		clearTimeout(timeOutMessage);
-		var json = JSON.parse(localStorage[usrname])
+		var json = JSON.parse(localStorage[username])
 		json["games"]++;
-		localStorage[usrname] = JSON.stringify(json);
+		localStorage[username] = JSON.stringify(json);
 		document.getElementById("messageH1").innerHTML = "Perdeu 😔";
 
-		gameRunning = false;
+		gameInProgress = false;
 
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
+		document.getElementById("timerH2").style.display = "none";
 		
-
+		clearInterval(timer);
 		
 	}
 }
@@ -513,7 +582,7 @@ function nimOnlineGame(gameId, boardSize){
 			}
 		}
 
-		xhr.send(JSON.stringify({"nick": usrname, "pass": password, "game": this.gameId, "stack": x, "pieces": y}));
+		xhr.send(JSON.stringify({"nick": username, "password": password, "game": this.gameId, "stack": x, "pieces": y}));
 	}
 
 	this.deletePieceConfirmation = function(x, y){
@@ -525,14 +594,15 @@ function nimOnlineGame(gameId, boardSize){
 
 	this.endGame = function(winner){
 		clearTimeout(timeOutMessage);
-		document.getElementById("messageH1").innerHTML = "O jogador <ins>" + winner + "</ins> ganhou! Parabéns! 🏆";
+		document.getElementById("messageH1").innerHTML = "O jogador <ins>" + winner + "</ins> ganhou! Parabéns! 🏆🥇";
 
-		gameRunning = false;
+		gameInProgress = false;
 
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
-		
+		document.getElementById("timerH2").style.display = "none";
+		clearInterval(timer);
 		evtSource.close();
 	}
 
@@ -545,12 +615,13 @@ function nimOnlineGame(gameId, boardSize){
 				return;
 			else if(this.status == 400){
 				clearTimeout(timeOutMessage);
-				document.getElementById("messageH1").innerHTML = "Error: Bad request.";
+				document.getElementById("messageH1").innerHTML = "Error! Bad request.";
 			}
 		}
 
-		xhr.send(JSON.stringify({"nick": usrname, "pass": password, "game": this.gameId}));
+		xhr.send(JSON.stringify({"nick": username, "password": password, "game": this.gameId}));
 
+		clearInterval(timer);
 		
 	}
 }
@@ -676,7 +747,7 @@ function Piece(x, y){
 }
 
 function initiateEventSource(gameId){
-	evtSource = new EventSource(url + "update?nick=" + usrname + "&game=" + gameId);
+	evtSource = new EventSource(url + "update?nick=" + username + "&game=" + gameId);
 
 	evtSource.onmessage = function(packet){
 		var json = JSON.parse(packet.data);
@@ -687,12 +758,22 @@ function initiateEventSource(gameId){
 				mainGame.deletePieceConfirmation(x, y);
 				mainGame.turn = json["turn"];
 				mainGame.updateMessageDiv();
-			
+				if(mainGame.turn==username)
+				setTimer();
+			else{
+				clearInterval(timer);
+				document.getElementById("timerH2").innerHTML = "1m 0s"
+			}
 			}
 			else{
 				var firstPlayer = json["turn"];
 				mainGame.initiateGame(firstPlayer);
-				
+				if(firstPlayer==username)
+					setTimer();
+				else{
+					clearInterval(timer);
+					document.getElementById("timerH2").innerHTML = "1m 0s"
+				}
 			}
 		}
 		else if(json["winner"]!=null){
@@ -701,7 +782,7 @@ function initiateEventSource(gameId){
 		else if(json["error"]){
 			if(json["error"]=="Invalid game reference"){
 				clearTimeout(timeOutMessage);
-				document.getElementById("messageH1").innerHTML = "Error: Incorrect game ID.";
+				document.getElementById("messageH1").innerHTML = "Error! Incorrect game ID.";
 			}
 			else{
 				clearTimeout(timeOutMessage);
@@ -711,14 +792,14 @@ function initiateEventSource(gameId){
 		else if(json["winner"]==null){
 			if(timeLeft<=0){
 				setTimeout(function(){
-					gameRunning = false;
+					gameInProgress = false;
 					showGameForm(true, true);
 					evtSource.close();
 				}
 				,3000);
 			}
 			else{
-				gameRunning = false;
+				gameInProgress = false;
 				showGameForm(true, true);
 				evtSource.close();
 			}

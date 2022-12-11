@@ -5,10 +5,10 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="nim.css">
 </head>
-<body onload="showMainPage()">
+<body onload="showFrontPage()">
 
 	<div id="menu">
-		<img class="logoImg" src="https://cdn.discordapp.com/attachments/760658720136495114/1034021701194895400/Binary_tree_v2.png" alt="logo" onclick="showMainPage()">
+		<img class="logoImg" src="https://cdn.discordapp.com/attachments/760658720136495114/1034021701194895400/Binary_tree_v2.png" alt="logo" onclick="showFrontPage()">
 		<div class="bigList">
 			<ul class="buttonList">
 				<li class="buttonList"><a onclick="showGameForm(true, true)">Jogar</a></li>
@@ -46,9 +46,10 @@
 			<button id="loginButton" onclick="login()">Login</button>
 			<br>
 		</div>
+		<br>
 		<div id="signUpDiv">
 			<br>
-			<p><h1>Não tens conta? Regista-te!</h1></p>
+			<h1>Não tens conta? Regista-te!</h1>
 			<form id="userRegForm" action="javascript:void(0)">
 				<input id="userReg" type="text" placeholder="Username" name="username">
 				<div id="passwordRegDiv">
@@ -61,7 +62,7 @@
 		<div id="gameTypeDiv">
 			<h1>MODO DE JOGO</h1>
 			<form id="gameTypeForm">
-				<input type="radio" name="gameTypeButton" value="singleplayer" onclick="singleplayerOptions()" checked> Contra o Computador<br>
+				<input type="radio" name="gameTypeButton" value="singleplayer" onclick="showSingleplayerOptions()" checked> Contra o Computador<br>
 				<input type="radio" name="gameTypeButton" value="multiplayer" onclick="showMultiplayerOptions()"> Multijogador<br>
 			</form>
 		</div>
@@ -94,7 +95,7 @@
 	<div id="gameDiv"></div>
 
 	<div id="restartGameDiv">
-		<button id="restartGameButton" onclick="restartGame()">Outro jogo?</button>
+		<button id="restartGameButton" onclick="restartGame()">Tentar outra vez?</button>
 	</div>
 
 	<div id="leaveGameDiv">
