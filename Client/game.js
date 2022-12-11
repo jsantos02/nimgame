@@ -1,28 +1,28 @@
 "use strict";
 
-var username;
+var usrname;
 var password;
 var group = 16;
 var loginFlag = false;
 var divsArray = ["homePageDiv", "gameFormDiv", "gameDiv", "restartGameDiv", "leaveGameDiv", "rankingDiv", "rulesDiv"];
 var mainGame;
-var gameInProgress = false;
-var evtSource;
+var gameRunning = false;
+var evtSource; // event source
 var timeOutMessage;
 
 var timeLeft;
-var singleORmulti;
+var singleORmulti; // tipo de jogo
 
 var url = "http://twserver.alunos.dcc.fc.up.pt:8008/";
 
-function showFrontPage(){
+function showMainPage(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
 
 	document.getElementById("homePageDiv").style.display = "block";
 }
 
-function showSingleplayerOptions(){
+function singleplayerOptions(){
 	document.getElementById("singleplayerOptionsDiv").style.display = "block";
 	document.getElementById("multiplayerOptionsDiv").style.display = "block";
 }
@@ -35,21 +35,17 @@ function showMultiplayerOptions(){
 function showGameForm(goodPassword, goodBoardSize){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
-
-	if(gameInProgress){
+	if(gameRunning){
 		document.getElementById("gameDiv").style.display = "block";
 		document.getElementById("leaveGameDiv").style.display = "block";
 		return;
 	}
-
 	document.getElementById("userInputForm").reset();
 	document.getElementById("gameTypeForm").reset();
 	document.getElementById("difficultyForm").reset();
 	document.getElementById("playFirstForm").reset();
 	document.getElementById("boardSizeForm").reset();
-
 	document.getElementById("gameFormDiv").style.display = "block";
-
 	if(loginFlag==false){
 		document.getElementById("loginDiv").style.display = "block";
 		document.getElementById("gameTypeDiv").style.display = "none";
@@ -64,11 +60,10 @@ function showGameForm(goodPassword, goodBoardSize){
 		var spORmp = document.getElementById("gameTypeForm").elements["gameTypeButton"].value;
 
 		if(spORmp == "singleplayer")
-			showSingleplayerOptions();
+			singleplayerOptions();
 		else
 			showMultiplayerOptions();
 	}
-
 	if(goodPassword)
 		document.getElementById("wrongPasswordText").style.display = "none";
 	else
@@ -83,46 +78,23 @@ function showGameForm(goodPassword, goodBoardSize){
 function showRanks(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
-
 	document.getElementById("rankingDiv").style.display = "block";
-
 	showSingleplayerRanks();
 }
 
 function showSingleplayerRanks(){
 	document.getElementById("boardSizeFormRanks").style.display = "none";
-
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
-
 	document.getElementById("rankingDiv").style.display = "block";
-		
-	var finalText = 
-		"<div class='rankings'>" +
-			"<table>" +
-				"<tr>" +
-					"<th>Jogador</th>" +
-							"<th>Total de Jogos</th>" +
-							"<th>Vitórias</th>" +
-							"<th>Derrotas</th>" +
-							"<th>Percentagem de vitórias</th>" +
-				"</tr>";
+	var finalText = "<div class='rankings'>" + "<table>" + "<tr>" + "<th>Jogador</th>" + "<th>Total de Jogos</th>" + "<th>Vitórias</th>" + "<th>Derrotas</th>" + "<th>Percentagem de vitórias</th>" + "</tr>";
 	for(var i=0; i<localStorage.length; i++){
 		var jsonUsername = localStorage.key(i);
 		var json = JSON.parse(localStorage.getItem(localStorage.key(i)));
-		finalText += 
-			"<tr>" +
-				"<td>" + jsonUsername + "</td>" +
-				"<td>" + json.games + "</td>" +
-				"<td>" + json.victories + "</td>" +
-				"<td>" + (json.games - json.victories) + "</td>" +
-				"<td>" + ((json.victories / json.games)*100).toFixed(2) + "%" + "</td>";
+		finalText += "<tr>" + "<td>" + jsonUsername + "</td>" + "<td>" + json.games + "</td>" + "<td>" + json.victories + "</td>" + "<td>" + (json.games - json.victories) + "</td>" + "<td>" + ((json.victories / json.games)*100).toFixed(2) + "%" + "</td>";
 		finalText += "</tr>";
 	}
-	finalText += 
-			"</table>" +
-		"</div>";
-
+	finalText += "</table>" + "</div>";
 	document.getElementById("tableRankingDiv").innerHTML = finalText;
 }
 
@@ -136,11 +108,9 @@ function showMultiplayerRanks(boardSize){
 	xhr.open("POST", url+"ranking", true);
 
 	xhr.onreadystatechange = function() {
-		if(this.readyState < 4)
-			return;
+		if(this.readyState < 4) return;
 		else if(this.status == 200){
 			var json = JSON.parse(this.responseText)["ranking"];
-			
 			var finalText = 
 				"<div class='rankings'>" +
 					"<table>" +
@@ -169,8 +139,7 @@ function showMultiplayerRanks(boardSize){
 				"</div>";
 
 			document.getElementById("tableRankingDiv").innerHTML = finalText;
-		}
-		else if(this.status == 400)
+		} else if(this.status == 400)
 			document.getElementById("tableRankingDiv").innerHTML = "Número inválido";
 	}
 
@@ -180,14 +149,12 @@ function showMultiplayerRanks(boardSize){
 function showRules(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
-
 	document.getElementById("rulesDiv").style.display = "block";
 }
 
 function showGameDiv(){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
-
 	document.getElementById("gameDiv").style.display = "block";
 }
 
@@ -197,7 +164,7 @@ function resetGameDiv(){
 		elem.removeChild(elem.firstChild);
 }
 
-function playGame(){
+function playGame(){ // funcao para jogar
 	if(document.getElementById("gameTypeForm").elements["gameTypeButton"].value == "singleplayer"){
 
 		var dif = document.getElementById("difficultyForm").elements["difficultyButton"].value;
@@ -242,7 +209,7 @@ function playGame(){
 
 				initiateEventSource(gameId);
 
-				gameInProgress = true;
+				gameRunning = true;
 
 				messageH.innerHTML = "À espera de oponente";
 
@@ -261,7 +228,7 @@ function playGame(){
 				messageH.innerHTML = "Erro! Não foi possível ligar ao servidor.";
 		}
 
-		xhr.send(JSON.stringify({"group": group, "nick": username, "pass": password, "size": boardSize}));
+		xhr.send(JSON.stringify({"group": group, "nick": usrname, "pass": password, "size": boardSize}));
 	}
 }
 
@@ -270,10 +237,10 @@ function restartGame(){
 }
 
 function login(){
-	username = document.getElementById("userInput").value;
+	usrname = document.getElementById("userInput").value;
 	password = document.getElementById("passwordInput").value;
 
-	var js_obj = {"nick": username, "password": password};
+	var js_obj = {"nick": usrname, "password": password};
 	var json = JSON.stringify(js_obj);
 
 	var xhr = new XMLHttpRequest();
@@ -285,8 +252,8 @@ function login(){
 		else if(this.status == 200){
 			
 			loginFlag=true;
-			if(localStorage[username] == null)
-				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
+			if(localStorage[usrname] == null)
+				localStorage[usrname] = JSON.stringify({"victories": 0, "games": 0});
 
 			showGameForm(true, true);
 		}
@@ -298,10 +265,10 @@ function login(){
 }
 
 function loginUponReg(){
-	username = document.getElementById("userReg").value;
+	usrname = document.getElementById("userReg").value;
 	password = document.getElementById("passwordReg").value;
 
-	var js_obj = {"nick": username, "password": password};
+	var js_obj = {"nick": usrname, "password": password};
 	var json = JSON.stringify(js_obj);
 	
 	var xhr = new XMLHttpRequest();
@@ -312,8 +279,8 @@ function loginUponReg(){
 			return;
 		else if(this.status == 200){
 			loginFlag=true;
-			if(localStorage[username] == null)
-				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
+			if(localStorage[usrname] == null)
+				localStorage[usrname] = JSON.stringify({"victories": 0, "games": 0});
 
 			showGameForm(true, true);
 		}
@@ -325,10 +292,10 @@ function loginUponReg(){
 }
 
 function signUp() {
-	username = document.getElementById("userReg").value;
+	usrname = document.getElementById("userReg").value;
 	password = document.getElementById("passwordReg").value;
 
-	const data = {"nick": username, "pass": password};
+	const data = {"nick": usrname, "pass": password};
 
 	fetch(url+"register",{
 		method:"POST",
@@ -339,16 +306,16 @@ function signUp() {
 
 
 function logout(){
-	if(gameInProgress){
-		document.getElementById("showLoginText").innerHTML = "Error! Game in progress.";
-		setTimeout(function(){ document.getElementById("showLoginText").innerHTML = "Welcome, " + username + "!"; }, 4000);
+	if(gameRunning){
+		document.getElementById("showLoginText").innerHTML = "Error: Game in progress.";
+		setTimeout(function(){ document.getElementById("showLoginText").innerHTML = "Welcome, " + usrname + "!"; }, 4000);
 		return;
 	}
 
 	document.getElementById("showLoginDiv").style.display = "none";
 
 	loginFlag=false;
-	showFrontPage();
+	showMainPage();
 }
 
 function leaveGame(){
@@ -397,7 +364,7 @@ function nimGame(dif, firstPlayer, boardSize){
 		this.pc = new PC(this.dif);
 		this.moves = 0;
 
-		gameInProgress = true;
+		gameRunning = true;
 
 		resetGameDiv();
 
@@ -422,7 +389,7 @@ function nimGame(dif, firstPlayer, boardSize){
 
 	this.updateMessageDiv = function(){
 		if((this.moves%2==0 && this.firstPlayer=="player") || (this.moves%2!=0 && this.firstPlayer!="player")){
-			document.getElementById("messageH1").innerHTML = "É a vez de <ins>" + username + "</ins>!";
+			document.getElementById("messageH1").innerHTML = "É a vez de <ins>" + usrname + "</ins>!";
 			
 		}
 		else{
@@ -444,7 +411,7 @@ function nimGame(dif, firstPlayer, boardSize){
 
 		this.moves++;
 
-		if(gameInProgress==true)
+		if(gameRunning==true)
 			this.updateMessageDiv();
 
 		var _this = this;
@@ -464,20 +431,20 @@ function nimGame(dif, firstPlayer, boardSize){
 
 	this.endGame = function(){
 		if((this.moves%2==0 && this.firstPlayer=="player") || (this.moves%2!=0 && this.firstPlayer!="player")){
-			var json = JSON.parse(localStorage[username])
+			var json = JSON.parse(localStorage[usrname])
 			json["games"]++;
 			json["victories"]++;
-			localStorage[username] = JSON.stringify(json);
+			localStorage[usrname] = JSON.stringify(json);
 			document.getElementById("messageH1").innerHTML = "VITÓRIA! 🏆";
 		}
 		else{
-			var json = JSON.parse(localStorage[username])
+			var json = JSON.parse(localStorage[usrname])
 			json["games"]++;
-			localStorage[username] = JSON.stringify(json);
+			localStorage[usrname] = JSON.stringify(json);
 			document.getElementById("messageH1").innerHTML = "Perdeu 😔";
 		}
 
-		gameInProgress = false;
+		gameRunning = false;
 
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
@@ -487,12 +454,12 @@ function nimGame(dif, firstPlayer, boardSize){
 
 	this.leave = function(){
 		clearTimeout(timeOutMessage);
-		var json = JSON.parse(localStorage[username])
+		var json = JSON.parse(localStorage[usrname])
 		json["games"]++;
-		localStorage[username] = JSON.stringify(json);
+		localStorage[usrname] = JSON.stringify(json);
 		document.getElementById("messageH1").innerHTML = "Perdeu 😔";
 
-		gameInProgress = false;
+		gameRunning = false;
 
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
@@ -546,7 +513,7 @@ function nimOnlineGame(gameId, boardSize){
 			}
 		}
 
-		xhr.send(JSON.stringify({"nick": username, "pass": password, "game": this.gameId, "stack": x, "pieces": y}));
+		xhr.send(JSON.stringify({"nick": usrname, "pass": password, "game": this.gameId, "stack": x, "pieces": y}));
 	}
 
 	this.deletePieceConfirmation = function(x, y){
@@ -560,7 +527,7 @@ function nimOnlineGame(gameId, boardSize){
 		clearTimeout(timeOutMessage);
 		document.getElementById("messageH1").innerHTML = "O jogador <ins>" + winner + "</ins> ganhou! Parabéns! 🏆";
 
-		gameInProgress = false;
+		gameRunning = false;
 
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
@@ -578,11 +545,11 @@ function nimOnlineGame(gameId, boardSize){
 				return;
 			else if(this.status == 400){
 				clearTimeout(timeOutMessage);
-				document.getElementById("messageH1").innerHTML = "Error! Bad request.";
+				document.getElementById("messageH1").innerHTML = "Error: Bad request.";
 			}
 		}
 
-		xhr.send(JSON.stringify({"nick": username, "pass": password, "game": this.gameId}));
+		xhr.send(JSON.stringify({"nick": usrname, "pass": password, "game": this.gameId}));
 
 		
 	}
@@ -709,7 +676,7 @@ function Piece(x, y){
 }
 
 function initiateEventSource(gameId){
-	evtSource = new EventSource(url + "update?nick=" + username + "&game=" + gameId);
+	evtSource = new EventSource(url + "update?nick=" + usrname + "&game=" + gameId);
 
 	evtSource.onmessage = function(packet){
 		var json = JSON.parse(packet.data);
@@ -734,7 +701,7 @@ function initiateEventSource(gameId){
 		else if(json["error"]){
 			if(json["error"]=="Invalid game reference"){
 				clearTimeout(timeOutMessage);
-				document.getElementById("messageH1").innerHTML = "Error! Incorrect game ID.";
+				document.getElementById("messageH1").innerHTML = "Error: Incorrect game ID.";
 			}
 			else{
 				clearTimeout(timeOutMessage);
@@ -744,14 +711,14 @@ function initiateEventSource(gameId){
 		else if(json["winner"]==null){
 			if(timeLeft<=0){
 				setTimeout(function(){
-					gameInProgress = false;
+					gameRunning = false;
 					showGameForm(true, true);
 					evtSource.close();
 				}
 				,3000);
 			}
 			else{
-				gameInProgress = false;
+				gameRunning = false;
 				showGameForm(true, true);
 				evtSource.close();
 			}

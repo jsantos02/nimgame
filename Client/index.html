@@ -5,10 +5,10 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="nim.css">
 </head>
-<body onload="showFrontPage()">
+<body onload="showMainPage()">
 
 	<div id="menu">
-		<img class="logoImg" src="https://cdn.discordapp.com/attachments/760658720136495114/1034021701194895400/Binary_tree_v2.png" alt="logo" onclick="showFrontPage()">
+		<img class="logoImg" src="https://cdn.discordapp.com/attachments/760658720136495114/1034021701194895400/Binary_tree_v2.png" alt="logo" onclick="showMainPage()">
 		<div class="bigList">
 			<ul class="buttonList">
 				<li class="buttonList"><a onclick="showGameForm(true, true)">Jogar</a></li>
@@ -61,7 +61,7 @@
 		<div id="gameTypeDiv">
 			<h1>MODO DE JOGO</h1>
 			<form id="gameTypeForm">
-				<input type="radio" name="gameTypeButton" value="singleplayer" onclick="showSingleplayerOptions()" checked> Contra o Computador<br>
+				<input type="radio" name="gameTypeButton" value="singleplayer" onclick="singleplayerOptions()" checked> Contra o Computador<br>
 				<input type="radio" name="gameTypeButton" value="multiplayer" onclick="showMultiplayerOptions()"> Multijogador<br>
 			</form>
 		</div>
