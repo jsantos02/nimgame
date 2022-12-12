@@ -32,7 +32,7 @@ function showMultiplayerOptions(){
 	document.getElementById("multiplayerOptionsDiv").style.display = "block";
 }
 
-function showGameForm(goodPassword, goodBoardSize){
+function showGameForm(goodAccount, goodPassword, goodBoardSize){
 	for(var i=0; i<divsArray.length; i++)
 		document.getElementById(divsArray[i]).style.display = "none";
 
@@ -78,6 +78,12 @@ function showGameForm(goodPassword, goodBoardSize){
 		document.getElementById("wrongBoardSizeText").style.display = "none";
 	else
 		document.getElementById("wrongBoardSizeText").style.display = "block";
+
+	if(goodAccount)
+		document.getElementById("alreadyExists").style.display = "none";
+	else
+		document.getElementById("alreadyExists").style.display = "block";
+
 }
 
 function showRanks(){
@@ -105,7 +111,6 @@ function showSingleplayerRanks(){
 							"<th>Total de Jogos</th>" +
 							"<th>Vitórias</th>" +
 							"<th>Derrotas</th>" +
-							"<th>Percentagem de vitórias</th>" +
 				"</tr>";
 	for(var i=0; i<localStorage.length; i++){
 		var jsonUsername = localStorage.key(i);
@@ -115,8 +120,7 @@ function showSingleplayerRanks(){
 				"<td>" + jsonUsername + "</td>" +
 				"<td>" + json.games + "</td>" +
 				"<td>" + json.victories + "</td>" +
-				"<td>" + (json.games - json.victories) + "</td>" +
-				"<td>" + ((json.victories / json.games)*100).toFixed(2) + "%" + "</td>";
+				"<td>" + (json.games - json.victories) + "</td>";
 		finalText += "</tr>";
 	}
 	finalText += 
@@ -149,7 +153,7 @@ function showMultiplayerRanks(boardSize){
 							"<th>Total de Jogos</th>" +
 							"<th>Vitórias</th>" +
 							"<th>Derrotas</th>" +
-							"<th>Percentagem de vitórias</th>" +
+							
 						"</tr>";
 			if(json != null){
 				for(var j=0; j<json.length; j++){
@@ -159,8 +163,7 @@ function showMultiplayerRanks(boardSize){
 							"<td>" + json[j].nick + "</td>" +
 							"<td>" + json[j].games + "</td>" +
 							"<td>" + json[j].victories + "</td>" +
-							"<td>" + (json[j].games - json[j].victories) + "</td>" +
-							"<td>" + ((json[j].victories / json[j].games)*100).toFixed(2) + "%" + "</td>";
+							"<td>" + (json[j].games - json[j].victories) + "</td>";
 					finalText += "</tr>";
 				}
 			}
@@ -174,7 +177,7 @@ function showMultiplayerRanks(boardSize){
 			document.getElementById("tableRankingDiv").innerHTML = "Número inválido";
 	}
 
-	xhr.send(JSON.stringify({"size": parseInt(boardSize)}));
+	xhr.send(JSON.stringify({"size": parseInt(boardSize), "group": 11}));
 }
 
 function showRules(){
@@ -206,8 +209,8 @@ function playGame(){
 
 		var boardSize = document.getElementById("boardSizeForm").elements["boardSizeInput"].value;
 
-		if(boardSize%1!=0.0 || boardSize<=0){ //number with colon
-			showGameForm(true, false);
+		if(boardSize%1!=0.0 || boardSize<=0){ 
+			showGameForm(true,true, false);
 			return;
 		}
 
@@ -230,6 +233,9 @@ function playGame(){
 		timerH.id = "timerH2";
 		document.getElementById("gameDiv").appendChild(timerH);
 		setTimer();
+
+		
+
 		showGameDiv();
 
 		singleORmulti = "multi";
@@ -247,7 +253,7 @@ function playGame(){
 
 				gameInProgress = true;
 
-				messageH.innerHTML = "À espera de oponente";
+				messageH.innerHTML = "À espera de oponente...";
 
 				mainGame = new nimOnlineGame(gameId, boardSize);
 
@@ -312,87 +318,62 @@ function login(){
 			return;
 		else if(this.status == 200){
 			document.getElementById("showLoginDiv").style.display = "block";
-			document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim," + username;
+			document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim, " + username;
 			loginFlag=true;
 			if(localStorage[username] == null)
 				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
 
-			showGameForm(true, true);
+			showGameForm(true,true, true);
 		}
 		else if(this.status == 400)
-			showGameForm(false, true);
+			showGameForm(true,false, true);
 	}
-
 	xhr.send(json);
 }
 
-function loginUponReg(){
+function signUp(){
 	username = document.getElementById("userReg").value;
 	password = document.getElementById("passwordReg").value;
-
 	var js_obj = {"nick": username, "password": password};
 	var json = JSON.stringify(js_obj);
-	
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url+"register", true);
-	
 	xhr.onreadystatechange = function() {
 		if(this.readyState < 4)
 			return;
 		else if(this.status == 200){
 			document.getElementById("showLoginDiv").style.display = "block";
-			document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim," + username;
+			document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim, " + username;
 			loginFlag=true;
 			if(localStorage[username] == null)
 				localStorage[username] = JSON.stringify({"victories": 0, "games": 0});
-
-			showGameForm(true, true);
+			showGameForm(true,true, true);
 		}
 		else if(this.status == 400)
-			showGameForm(false, true);
+			showGameForm(false,true, true);
 	}
-
 	xhr.send(json);
 }
-
-function signUp() {
-	username = document.getElementById("userReg").value;
-	password = document.getElementById("passwordReg").value;
-
-	const data = {"nick": username, "password": password};
-
-	fetch(url+"register",{
-		method:"POST",
-		body: JSON.stringify(data),
-	})
-	.then(loginUponReg);
-}
-
 
 function logout(){
 	if(gameInProgress){
 		document.getElementById("showLoginText").innerHTML = "Não podes sair enquanto o jogo está em progresso!";
-		setTimeout(function(){ document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim," + username; }, 4000);
+		setTimeout(function(){ document.getElementById("showLoginText").innerHTML = "Bem-vindo ao Nim, " + username; }, 4000);
 		return;
 	}
-
 	document.getElementById("showLoginDiv").style.display = "none";
-
 	loginFlag=false;
 	showFrontPage();
 }
-
 function leaveGame(){
 	mainGame.leave();
 }
-
 function Board(x, y){
 	this.boardQuantityArray = [];
 	this.boardDivArray = [];
 	this.xMax = x;
 	this.yMax = y;
 	this.boardDiv;
-	
 	this.createBoard = function(){
 		this.boardDiv = document.createElement("div");
 		this.boardDiv.className = "boardDiv";
@@ -418,42 +399,29 @@ function nimGame(dif, firstPlayer, boardSize){
 	this.dif = dif;
 	this.firstPlayer = firstPlayer;
 	this.boardSize = boardSize;
-
 	this.board;
 	this.moves;
 	this.pc;
-
 	this.initiateGame = function(){
 		this.board = new Board(this.boardSize, this.boardSize);
 		this.pc = new PC(this.dif);
 		this.moves = 0;
-
 		gameInProgress = true;
-
 		resetGameDiv();
-
 		var messageH = document.createElement("h1");
 		messageH.id = "messageH1";
 		document.getElementById("gameDiv").appendChild(messageH);
-
-	
 		var timerH = document.createElement("h2");
 		timerH.id = "timerH2";
 		document.getElementById("gameDiv").appendChild(timerH);
-
 		this.board.createBoard();
-
 		showGameDiv();
-
 		document.getElementById("leaveGameDiv").style.display = "block";
-
 		this.updateMessageDiv();
-
 		var _this = this;
 		if(this.firstPlayer=="pc")
 			setTimeout(function() {_this.pc.move(); }, 1500);
 	}
-
 	this.updateMessageDiv = function(){
 		if((this.moves%2==0 && this.firstPlayer=="player") || (this.moves%2!=0 && this.firstPlayer!="player")){
 			document.getElementById("messageH1").innerHTML = "É a vez de <ins>" + username + "</ins>!";
@@ -464,55 +432,44 @@ function nimGame(dif, firstPlayer, boardSize){
 			setTimer();
 		}
 	}
-
 	this.deletePiece = function(x, y){
 		for(var i=y; i<this.board.boardQuantityArray[x]; i++)
 			document.getElementById("piece" + x + "|" + i).className = "pieceDeleted";
-
 		this.board.boardQuantityArray[x]=y;
-
 		if(this.checkGameOver()==true){
 			this.endGame();
 			return;
 		}
-
 		this.moves++;
-
 		if(gameInProgress==true)
 			this.updateMessageDiv();
-
 		var _this = this;
 		if((this.moves%2==0 && this.firstPlayer=="pc") || (this.moves%2!=0 && this.firstPlayer!="pc"))
 			setTimeout(function() {_this.pc.move(); }, 1500);
 	}
-
 	this.checkGameOver = function(){
 		var gameOver = true;
 		for(var i=0; i<this.board.boardQuantityArray.length; i++){
 			if(this.board.boardQuantityArray[i]>0)
 				return false;
 		}
-
 		return true;
 	}
-
 	this.endGame = function(){
 		if((this.moves%2==0 && this.firstPlayer=="player") || (this.moves%2!=0 && this.firstPlayer!="player")){
 			var json = JSON.parse(localStorage[username])
 			json["games"]++;
 			json["victories"]++;
 			localStorage[username] = JSON.stringify(json);
-			document.getElementById("messageH1").innerHTML = "VITÓRIA! 🏆🥇";
+			document.getElementById("messageH1").innerHTML = "VITÓRIA! 🏆";
 		}
 		else{
 			var json = JSON.parse(localStorage[username])
 			json["games"]++;
 			localStorage[username] = JSON.stringify(json);
-			document.getElementById("messageH1").innerHTML = "Perdeu 😔. Tenta outra vez!";
+			document.getElementById("messageH1").innerHTML = "Perdeu 😔";
 		}
-
 		gameInProgress = false;
-
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
@@ -526,26 +483,19 @@ function nimGame(dif, firstPlayer, boardSize){
 		json["games"]++;
 		localStorage[username] = JSON.stringify(json);
 		document.getElementById("messageH1").innerHTML = "Perdeu 😔";
-
 		gameInProgress = false;
-
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
 		document.getElementById("timerH2").style.display = "none";
-		
 		clearInterval(timer);
-		
 	}
 }
-
 function nimOnlineGame(gameId, boardSize){
 	this.gameId = gameId;
 	this.boardSize = boardSize;
-
 	this.turn;
 	this.board;
-
 	this.initiateGame = function(firstPlayer){
 		this.board = new Board(this.boardSize, this.boardSize);
 
@@ -556,16 +506,14 @@ function nimOnlineGame(gameId, boardSize){
 
 		singleORmulti = "single";
 	}
-
 	this.updateMessageDiv = function(){
 		clearTimeout(timeOutMessage);
 		document.getElementById("messageH1").innerHTML = "É a vez do <ins>" + this.turn + "</ins>!";
+		document.getElementById("gameH3").innerHTML = "GameID: " + gameId;
 	}
-
 	this.deletePiece = function(x, y){                     // função notify
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", url+"notify", true);
-
 		xhr.onreadystatechange = function() {
 			if(this.readyState < 4)
 				return;
@@ -584,28 +532,24 @@ function nimOnlineGame(gameId, boardSize){
 
 		xhr.send(JSON.stringify({"nick": username, "password": password, "game": this.gameId, "stack": x, "pieces": y}));
 	}
-
 	this.deletePieceConfirmation = function(x, y){
 		for(var i=y; i<this.board.boardQuantityArray[x]; i++)
 			document.getElementById("piece" + x + "|" + i).className = "pieceDeleted";
 
 		this.board.boardQuantityArray[x]=y;
 	}
-
 	this.endGame = function(winner){
 		clearTimeout(timeOutMessage);
-		document.getElementById("messageH1").innerHTML = "O jogador <ins>" + winner + "</ins> ganhou! Parabéns! 🏆🥇";
-
+		document.getElementById("messageH1").innerHTML = "O jogador <ins>" + winner + "</ins> ganhou! Parabéns! 🏆";
 		gameInProgress = false;
-
 		document.getElementById("restartGameDiv").style.display = "block";
 		document.getElementById("boardDiv").style.display = "none";
 		document.getElementById("leaveGameDiv").style.display = "none";
 		document.getElementById("timerH2").style.display = "none";
+		document.getElementById("gameH3").style.display= "none";
 		clearInterval(timer);
 		evtSource.close();
 	}
-
 	this.leave = function(){
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", url+"leave", true);
@@ -618,17 +562,12 @@ function nimOnlineGame(gameId, boardSize){
 				document.getElementById("messageH1").innerHTML = "Error! Bad request.";
 			}
 		}
-
 		xhr.send(JSON.stringify({"nick": username, "password": password, "game": this.gameId}));
-
 		clearInterval(timer);
-		
 	}
 }
-
 function PC(dif){
 	this.dif = dif;
-
 	this.easyMove = function(){
 		while(true){
 			var x = Math.floor(Math.random() * mainGame.board.boardQuantityArray.length);
@@ -641,7 +580,6 @@ function PC(dif){
 			}
 		}
 	}
-
 	this.hardMove = function(){
 		for(var i=0; i<mainGame.board.boardQuantityArray.length; i++){
 			for(var j=0; j<mainGame.board.boardQuantityArray[i]; j++){
@@ -663,31 +601,24 @@ function PC(dif){
 			x = Math.floor(Math.random() * mainGame.board.boardQuantityArray.length);
 		mainGame.deletePiece(x, mainGame.board.boardQuantityArray[x]-1);
 	}
-
 	this.xor = function(){
 		var value = 0;
 		for(var i=0; i<mainGame.board.boardQuantityArray.length; i++)
 			value ^= mainGame.board.boardQuantityArray[i];
-
 		return value;
 	}
-
 	this.move = function(){
 		switch(this.dif){
 			case "easy": 
 				this.easyMove();
 				break;
-
 			case "normal": 
 				var rand = Math.floor(Math.random() * 2);
-
 				if(rand==0)
 					this.easyMove();
 				else
 					this.hardMove();
-
 				break;
-
 			case "hard":
 				this.hardMove();
 				break;
@@ -697,7 +628,6 @@ function PC(dif){
 		}
 	}
 }
-
 function Piece(x, y){
 	this.x = x;
 	this.y = y;
@@ -705,7 +635,6 @@ function Piece(x, y){
 	this.html.className = "piece";
 	this.html.id = "piece" + x + "|" + y;
 	this.html.src = "https://cdn.discordapp.com/attachments/760658720136495114/1034781460500070400/piece.png";
-
 	this.html.onmouseover = function(){
 		if(this.className!="pieceDeleted" && ((mainGame.moves%2==0 && mainGame.firstPlayer=="player") || (mainGame.moves%2!=0 && mainGame.firstPlayer!="player"))){
 			this.className = "pieceHovered";
@@ -717,7 +646,6 @@ function Piece(x, y){
 				document.getElementById("piece" + x + "|" + y).className = "pieceHovered";
 		}
 	}
-
 	this.html.onmouseleave = function(){
 		if(this.className!="pieceDeleted" && ((mainGame.moves%2==0 && mainGame.firstPlayer=="player") || (mainGame.moves%2!=0 && mainGame.firstPlayer!="player"))){
 			this.className = "piece";
@@ -729,26 +657,21 @@ function Piece(x, y){
 				document.getElementById("piece" + x + "|" + y).className = "piece";
 		}
 	}
-
 	this.html.onclick = function(){
 		if(this.className!="pieceDeleted" && ((mainGame.moves%2==0 && mainGame.firstPlayer=="player") || (mainGame.moves%2!=0 && mainGame.firstPlayer!="player"))){
 			this.deletePiece();
 		}
 	}
-
 	this.html.deletePiece = function(){
 		var length = this.id.length;
 		var temp = this.id.indexOf("|");
 		var x = parseInt(this.id.slice(5, temp));
 		var y = parseInt(this.id.slice(temp+1, length));
-
 		mainGame.deletePiece(x, y);
 	}
 }
-
 function initiateEventSource(gameId){
 	evtSource = new EventSource(url + "update?nick=" + username + "&game=" + gameId);
-
 	evtSource.onmessage = function(packet){
 		var json = JSON.parse(packet.data);
 		if(json["turn"]!=null){
@@ -782,7 +705,7 @@ function initiateEventSource(gameId){
 		else if(json["error"]){
 			if(json["error"]=="Invalid game reference"){
 				clearTimeout(timeOutMessage);
-				document.getElementById("messageH1").innerHTML = "Error! Incorrect game ID.";
+				document.getElementById("messageH1").innerHTML = "ID de jogo errado.";
 			}
 			else{
 				clearTimeout(timeOutMessage);
@@ -793,17 +716,16 @@ function initiateEventSource(gameId){
 			if(timeLeft<=0){
 				setTimeout(function(){
 					gameInProgress = false;
-					showGameForm(true, true);
+					showGameForm(true,true, true);
 					evtSource.close();
 				}
 				,3000);
 			}
 			else{
 				gameInProgress = false;
-				showGameForm(true, true);
+				showGameForm(true,true, true);
 				evtSource.close();
 			}
-
 		}
 	}
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Jogo NIM</title>
+	<title>NIM</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="nim.css">
 </head>
@@ -21,21 +21,19 @@
 			<button id="logoutButton" onclick="logout()">Logout</button>
 		</div>
 	</div>
-	<hr>
-
 	<div id="homePageDiv">
 		<img id="homeImage" src="https://cdn.discordapp.com/attachments/760658720136495114/1034021701194895400/Binary_tree_v2.png" alt="logo">
 		<div id="homeTextDiv">
 			<br>
-			<p><b>Bem-vindo ao Jogo NIM!</b></p>
+			<p><b>Bem-vindo ao NIM!</b></p>
 	
-			<p>Clica em Jogar para começar.</p>
+			<p>Clica em Jogar para entrares na tua conta do NIM.</p>
 		</div>
 	</div>
 
 	<div id="gameFormDiv">
 		<div id="loginDiv">
-			<h1>USERNAME &amp; PASSWORD</h1>
+			<h1>Entra na tua conta</h1>
 			<form id="userInputForm" action="javascript:void(0)">
 				<input id="userInput" type="text" placeholder="Username" name="username">
 				<div id="passwordInputDiv">
@@ -46,7 +44,6 @@
 			<button id="loginButton" onclick="login()">Login</button>
 			<br>
 		</div>
-		<br>
 		<div id="signUpDiv">
 			<br>
 			<h1>Não tens conta? Regista-te!</h1>
@@ -110,8 +107,8 @@
 		<form id="boardSizeFormRanks" action="javascript:void(0)">
 			<div id="process">
 				<br>
-				<input id="inputSizeRankings" type="text" placeholder="Ex.: 5" name="boardSizeInputRanks">
-				<br>
+				<input id="inputSizeRankings" type="text" placeholder="Tamanho Tabuleiro Ex.: 5" name="boardSizeInputRanks">
+					<br>
 				<button id="multiplayerRankingProcessButton" onclick="showMultiplayerRanks(document.getElementById('boardSizeFormRanks').elements['boardSizeInputRanks'].value)">Processar</button>
 			</div>
 		</form>
@@ -127,15 +124,14 @@
 			<br>
 			O objetivo do jogo é remover o último objeto. (Alternativamente, o objetivo pode ser evitar tirar o último objeto - "à lá misére").</p>
 		
-		
 		<h1>Regras</h1>
-		<p>	<b>1.</b>  O jogo contém uma ou mais pilhas de peças, com um número determinado de peças em cada uma.
+		<p>	<b>→</b>  O jogo contém uma ou mais pilhas de peças, com um número determinado de peças em cada uma.
 		<br>		 
 		<br>
-		<b>2.</b> Os movimentos são feitos por turnos e em cada turno só um jogador pode jogar. Esse jogador pode tirar uma ou mais peças de uma pilha.
+		<b>→</b> Os movimentos são feitos por turnos e em cada turno só um jogador pode jogar. Esse jogador pode tirar uma ou mais peças de uma pilha.
 		<br>	
 		<br>
-		<b>3.</b> No final, o jogador que tirar a última peça, ganha.
+		<b>→</b> No final, o jogador que tirar a última peça, ganha.
 		</p>	
 	</div>
 

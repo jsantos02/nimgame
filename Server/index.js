@@ -1,6 +1,6 @@
 "use strict";
 
-var PORT = 8016
+var PORT = 8011
 
 var http = require("http");
 var processReq = require("./Modules/processReq.js");
@@ -19,6 +19,7 @@ http.createServer(function(request, response) {
 			response.end();
 			break;
 	}
+	response.end('LocalHost a funcionar, com os cabeçalhos GET e POST');
 }).listen(PORT);
 
-console.log("Server running at localhost:8016");
+console.log("Server running at localhost:8011");

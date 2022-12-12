@@ -228,6 +228,12 @@ body{
 	font-family:  Arial, Helvetica, sans-serif;
 }
 
+#gameH3 {
+	text-align: left;
+	font-size: 50%;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
 #gameFormDiv{
 	position: absolute;
 	font-weight: bold;
